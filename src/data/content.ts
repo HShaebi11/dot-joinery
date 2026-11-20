@@ -63,6 +63,19 @@ export function getSkill(slug: string): SkillSource | null {
   return raw ? { slug, raw } : null;
 }
 
+export interface SkillMeta {
+  slug: string;
+  name?: string;
+  description?: string;
+}
+
+export function getSkillMetas(): SkillMeta[] {
+  return getSkills().map((s) => {
+    const { data } = splitFrontmatter(s.raw);
+    return { slug: s.slug, name: data.name, description: data.description };
+  });
+}
+
 export function splitFrontmatter(raw: string): { data: Record<string, string>; body: string } {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
   if (!m) return { data: {}, body: raw };

@@ -1,13 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import InstallButton from '../../components/InstallButton.astro';
-import { getSkills, splitFrontmatter } from '../../data/content';
+import { getSkillMetas } from '../../data/content';
 import { SITE } from '../../data/site';
 
-const skills = getSkills().map((s) => ({
-  slug: s.slug,
-  ...splitFrontmatter(s.raw).data,
-}));
+const skills = getSkillMetas();
 ---
 
 <Base
