@@ -1,0 +1,112 @@
+---
+import { SITE } from '../data/site';
+
+interface Props {
+  skill: string;
+  compact?: boolean;
+}
+
+const { skill, compact = false } = Astro.props;
+
+const AGENTS = [
+  { id: '', label: 'Auto' },
+  { id: 'claude-code', label: 'Claude Code' },
+  { id: 'cursor', label: 'Cursor' },
+  { id: 'codex', label: 'Codex' },
+  { id: 'devin', label: 'Devin' },
+  { id: 'windsurf', label: 'Windsurf' },
+  { id: 'opencode', label: 'OpenCode' },
+  { id: 'gemini-cli', label: 'Gemini' },
+  { id: 'github-copilot', label: 'Copilot' },
+];
+---
+
+<div class="install" data-skill={skill} data-repo={SITE.repo}>
+  <span class="lbl">Add to your agent</span>
+  <div class="chip-row" role="group" aria-label="Target agent">
+    {AGENTS.map((a, i) => (
+      <button
+        type="button"
+        class="chip-btn"
+        data-agent={a.id}
+        aria-pressed={i === 0 ? 'true' : 'false'}
+      >
+        {a.label}
+      </button>
+    ))}
+  </div>
+  <div class="chip-row" role="group" aria-label="Install scope">
+    <button type="button" class="chip-btn" data-scope="project" aria-pressed="false">This project</button>
+    <button type="button" class="chip-btn" data-scope="global" aria-pressed="true">All projects</button>
+  </div>
+  <div class="cmd-box">
+    <code class="cmd"></code>
+    <button type="button" class="copy-btn">Copy</button>
+  </div>
+  {!compact && (
+    <p class="hint">
+      Requires Node.js 22.20+. The CLI detects your installed agents, or pick one above.
+      Skills install to <code>.agents/skills/</code> (project) or your home config (global).
+    </p>
+  )}
+</div>
+
+<script>
+  function initInstall(card: HTMLElement) {
+    const skill = card.dataset.skill!;
+    const repo = card.dataset.repo!;
+    const code = card.querySelector<HTMLElement>('.cmd')!;
+    const copyBtn = card.querySelector<HTMLButtonElement>('.copy-btn')!;
+    let agent = '';
+    let scope = 'global';
+
+    const render = () => {
+      const parts = [`npx skills add ${repo} --skill ${skill}`];
+      if (agent) parts.push(`-a ${agent}`);
+      if (scope === 'global') parts.push('-g');
+      code.textContent = parts.join(' ');
+    };
+
+    card.querySelectorAll<HTMLButtonElement>('[data-agent]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        agent = btn.dataset.agent ?? '';
+        card.querySelectorAll('[data-agent]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        render();
+      });
+    });
+
+    card.querySelectorAll<HTMLButtonElement>('[data-scope]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        scope = btn.dataset.scope ?? 'global';
+        card.querySelectorAll('[data-scope]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        render();
+      });
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const text = code.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      copyBtn.textContent = 'Copied';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }, 1600);
+    });
+
+    render();
+  }
+
+  document.querySelectorAll<HTMLElement>('.install').forEach(initInstall);
+</script>

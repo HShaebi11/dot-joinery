@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import InstallButton from '../components/InstallButton.astro';
+import { projects } from '../data/projects';
+import { getSkills, splitFrontmatter } from '../data/content';
+import { SITE } from '../data/site';
+
+const skills = getSkills().map((s) => ({
+  slug: s.slug,
+  ...splitFrontmatter(s.raw).data,
+}));
+---
+
+<Base>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">{SITE.org} — a public workshop notebook</span>
+      <h1>
+        Joinery by <em>Department<br />of Things</em>.
+      </h1>
+      <p class="lede">
+        Parametric, 3D-printable tools for woodworking — pegboard drilling
+        jigs designed as open systems, sliced print files, interactive case
+        studies, and agent skills that teach AI tools the same workflow.
+      </p>
+      <div class="actions">
+        <a class="btn solid" href="/projects/">Browse projects</a>
+        <a class="btn" href="/skills/">Add the skills</a>
+        <a class="btn ghost" href={SITE.repoUrl} rel="noopener">View on GitHub</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>{projects.length}</strong><span>Projects</span></div>
+        <div><strong>{skills.length}</strong><span>Agent skills</span></div>
+        <div><strong>100%</strong><span>Open sources</span></div>
+        <div><strong>0</strong><span>Supports needed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">The work</span>
+          <h2>Projects</h2>
+        </div>
+        <p>
+          One problem — drilling thousands of evenly spaced holes into plywood
+          pegboard — explored five ways, parameterized, and printed.
+        </p>
+      </div>
+      <div class="project-grid">
+        {projects.map((p) => <ProjectCard project={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">For agents & makers</span>
+          <h2>Skills</h2>
+        </div>
+        <p>
+          Reusable agent skills in the open <code>SKILL.md</code> format.
+          Install them into Claude Code, Cursor, Devin, Codex, and 70+ other
+          agents with one command.
+        </p>
+      </div>
+      <div class="skill-grid">
+        {skills.map((s) => (
+          <div class="skill-card">
+            <div class="skill-icon">{s.name?.[0]?.toUpperCase() ?? 'S'}</div>
+            <h3>{s.name ?? s.slug}</h3>
+            <p class="desc">{s.description}</p>
+            <InstallButton skill={s.slug} compact />
+            <div class="meta"><a href={`/skills/${s.slug}/`}>Details & source →</a></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">How it works</span>
+          <h2>Everything is parametric</h2>
+        </div>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <span class="num">01</span>
+          <h3>Design tokens first</h3>
+          <p>
+            Every jig is driven by named parameters — pitch, edge offset,
+            bush fit, pin clearance, printer bed. Change one value and the
+            whole system updates.
+          </p>
+        </div>
+        <div class="about-card">
+          <span class="num">02</span>
+          <h3>Two source formats</h3>
+          <p>
+            OpenSCAD for quick iteration and Fusion 360 Python scripts for
+            engineered assemblies. STL output either way — edit, re-export,
+            re-slice.
+          </p>
+        </div>
+        <div class="about-card">
+          <span class="num">03</span>
+          <h3>Skills for agents</h3>
+          <p>
+            The same parametric-CAD workflow is packaged as an agent skill, so
+            AI assistants can generate print-ready models using the same
+            engineering principles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

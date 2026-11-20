@@ -1,0 +1,31 @@
+---
+import type { Project } from '../data/projects';
+import { STATUS_LABELS } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const page = `/projects/${project.slug}/`;
+const files = `/files/${project.slug}/`;
+---
+
+<a class="project-card" href={page}>
+  <div class="thumb">
+    {project.image ? (
+      <img src={`${files}${project.image}`} alt={`${project.title} preview`} loading="lazy" />
+    ) : (
+      <span class="mono-mark">{project.slug.split('-').slice(0, 2).join(' / ').toUpperCase()}</span>
+    )}
+  </div>
+  <div class="body">
+    <span class="eyebrow">{project.series}</span>
+    <h3>{project.title}</h3>
+    <p class="tagline">{project.tagline}</p>
+    <div class="foot">
+      <span class="chip">{STATUS_LABELS[project.status]}</span>
+      <span class="go">View →</span>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,93 @@
+{
+    "error_string": "Success.",
+    "layer_height": 0.2800000011920929,
+    "peak_rss_mb": 95.84375,
+    "plate_index": 0,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 66.71366882324219,
+                "Bridge": 129.4397430419922,
+                "Custom": 1.3343315124511719,
+                "Inner wall": 5218.771484375,
+                "Internal solid infill": 542.0752563476563,
+                "Outer wall": 2669.382568359375,
+                "Overhang wall": 42.191978454589844,
+                "Skirt": 15.21528148651123,
+                "Sparse infill": 1834.1422119140625,
+                "Top surface": 184.9605712890625,
+                "Travel": 758.99267578125,
+                "Undefined": 758.5283203125
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "",
+                    "id": 1,
+                    "main_used_g": 0.0,
+                    "total_used_g": 0.0
+                }
+            ],
+            "id": 1,
+            "layer_filament_change": 0,
+            "main_predication": 11461.888671875,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 119.0,
+                        "height": 32.0,
+                        "width": 119.0,
+                        "x": 30.499990463256836,
+                        "y": 30.5,
+                        "z": 0.0
+                    },
+                    "id": 5,
+                    "name": "starter2_fence.stl",
+                    "triangle_count": 126
+                }
+            ],
+            "times": {
+                "conflict_check_time": 0,
+                "detect_overhangs_time": 0,
+                "export_gcode_time": 69,
+                "flush_plan_time": 0,
+                "generate_support_material_time": 3,
+                "infill_generate_time": 8,
+                "infill_time": 18,
+                "ironing_time": 0,
+                "make_perimeters_time": 24,
+                "multifilament_segment_2d_time": 0,
+                "other_slice_time": 3,
+                "prepare_infill_time": 10,
+                "region_split_time": 0,
+                "skirt_brim_time": 0,
+                "slice_layers_time": 3,
+                "sliced_time": 124,
+                "sliced_time_with_cache": 69,
+                "support_detect_time": 0,
+                "support_interface_time": 0,
+                "support_normal_generate_time": 0,
+                "support_toolpath_time": 0,
+                "support_tree_generate_time": 0,
+                "toolpath_time": 4,
+                "wall_time": 21,
+                "wipe_tower_time": 2
+            },
+            "total_predication": 11462.7587890625,
+            "triangle_count": 126,
+            "warning_message": "It seems object starter2_fence.stl has floating cantilever. Please re-orient the object or enable support generation."
+        }
+    ],
+    "sparse_infill_density": 15.0,
+    "times": {
+        "export_3mf_time": 0,
+        "export_slicedata_time": 0,
+        "export_time": 0,
+        "import_time": 3,
+        "load_slicedata_time": 0,
+        "prepare_time": 14
+    },
+    "wall_loops": 3
+}

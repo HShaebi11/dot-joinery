@@ -1,0 +1,14 @@
+{
+ "type": "process",
+ "name": "Fast Jig 0.28",
+ "from": "User",
+ "inherits": "0.20mm Standard @BBL A1M",
+ "layer_height": "0.28",
+ "wall_loops": "3",
+ "top_shell_layers": "4",
+ "bottom_shell_layers": "3",
+ "sparse_infill_density": "15%",
+ "compatible_printers": [
+  "Bambu Lab A1 mini 0.4 nozzle"
+ ]
+}

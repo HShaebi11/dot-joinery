@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f3ee">
+<title>FORM / FIELD — Pegboard jig studies</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--paper:#f5f3ee;--ink:#252d29;--muted:#737a72;--line:#dcded5;--green:#365d45;--lime:#e4eacb;--orange:#d58145;--mono:ui-monospace,SFMono-Regular,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px 'DM Sans',sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #9ba85e;outline-offset:3px}button{color:inherit}header{height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 34px;border-bottom:1px solid var(--line)}.brand{font:700 19px 'Space Grotesk',sans-serif;letter-spacing:-.7px}.brand span{color:var(--green)}.header-meta{display:flex;gap:24px;align-items:center;font:10px var(--mono);letter-spacing:1px;color:var(--muted)}.status{border:1px solid #cdd3bd;padding:8px 11px;border-radius:30px;color:var(--green)}main{max-width:1700px;margin:auto;padding:29px 34px 16px}.eyebrow{font:10px var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--green)}.intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:25px}h1{font:500 clamp(28px,3vw,42px)/1.13 'Space Grotesk',sans-serif;letter-spacing:-1.7px;margin:10px 0} .intro p{max-width:405px;color:var(--muted);line-height:1.7;margin:0 0 5px;font-size:13px}.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px}.section-label{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px;font:10px var(--mono);letter-spacing:1.1px;color:var(--muted)}.concepts{display:flex;flex-direction:column;gap:6px}.concept{width:100%;text-align:left;padding:13px 12px;background:transparent;border:1px solid var(--line);border-radius:9px;transition:background .15s,border-color .15s}.concept:hover{background:#edeee5}.concept[aria-pressed=true]{background:var(--green);color:white;border-color:var(--green)}.concept-top{display:flex;justify-content:space-between;font:10px var(--mono);opacity:.7;margin-bottom:10px}.concept strong{font:500 16px 'Space Grotesk',sans-serif;display:block;margin-bottom:4px}.concept small{font-size:11px;opacity:.7}.concept .arrow{font-size:15px}.parameters{margin-top:23px;padding-top:17px;border-top:1px solid var(--line)}.parameter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}label{font-size:10px;color:var(--muted);display:block} .field{display:flex;align-items:center;border-bottom:1px solid #c6cbbf;margin-top:4px}.field input{width:100%;min-width:0;border:0;background:transparent;padding:7px 0;color:var(--ink);font:13px var(--mono)}.field span{font:9px var(--mono);color:var(--muted)}.text-btn{border:0;background:none;padding:0;color:var(--green);font-size:10px;text-decoration:underline;text-underline-offset:3px}.apply{width:100%;margin-top:14px;border:1px solid #c9cebf;border-radius:5px;background:#ebeede;padding:9px;font-size:11px}.error{font-size:11px;line-height:1.5;color:#9f412b;margin:8px 0 0}.bed{font:9px var(--mono);color:var(--muted);line-height:1.6;margin-top:12px}.viewer{height:min(72vh,780px);min-height:540px;position:relative;background:#e9ece4;border:1px solid #dce0d4;border-radius:11px;overflow:hidden;isolation:isolate}.viewer canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}.viewport-top{position:absolute;top:18px;left:20px;right:18px;display:flex;justify-content:space-between;align-items:start;gap:12px;pointer-events:none}.view-caption{font:10px var(--mono);color:#687362;line-height:1.8}.view-caption strong{color:var(--green);font-weight:500}.view-controls{display:flex;gap:4px;pointer-events:auto;flex-wrap:wrap;justify-content:end}.view-controls button{font:10px var(--mono);padding:8px 9px;border:1px solid #cdd4c5;border-radius:4px;background:#f5f5eddd}.view-controls button[aria-pressed=true]{background:var(--green);color:white}.legend{position:absolute;bottom:18px;left:20px;display:flex;gap:14px;flex-wrap:wrap;font:9px var(--mono);color:#53604f;pointer-events:none}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--green)}.dot.orange{background:#d58145}.dot.blue{background:#397d89}.dot.gray{background:#9da99b}.inspection{position:absolute;left:20px;top:80px;max-width:240px;background:#f8f9efed;border:1px solid #d8decb;border-radius:6px;padding:10px;font-size:11px;line-height:1.6;pointer-events:none}.hidden{display:none!important}.loading{position:absolute;inset:0;display:grid;place-items:center;background:#e9ece4;z-index:4;padding:30px;text-align:center;color:var(--green)}.timeline{background:#faf9f5;border:1px solid var(--line);border-radius:8px;margin-top:10px;padding:14px 17px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}.playback{display:flex;gap:5px}.icon-btn{border:1px solid var(--line);border-radius:5px;background:transparent;width:32px;height:32px;font:14px var(--mono)}#play{background:var(--green);color:white;width:38px;border-color:var(--green)}.step-heading{font:10px var(--mono);color:var(--green);margin-bottom:5px;display:flex;justify-content:space-between;gap:10px}.step-text{font-size:12px;line-height:1.5;min-height:18px}#progress{width:100%;accent-color:var(--green);height:3px;display:block;margin:12px 0 0}.step-select{max-width:140px;border:0;background:transparent;color:var(--muted);font-size:10px} .details{display:grid;grid-template-columns:1.35fr 1fr;gap:25px;margin:23px 0 0;padding:24px 0;border-top:1px solid var(--line)}.details h2{font:500 23px 'Space Grotesk',sans-serif;margin:8px 0 10px;letter-spacing:-.6px}.description{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 14px}.tags{display:flex;gap:6px;flex-wrap:wrap}.tag{font:9px var(--mono);padding:6px 8px;border:1px solid #d4daca;border-radius:4px;color:var(--green)}.tradeoffs{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:3px}.tradeoffs h3{font:10px var(--mono);color:var(--green);font-weight:400;margin:5px 0 8px}.tradeoffs p{font-size:11px;color:var(--muted);line-height:1.7;margin:0}.prefer{margin-top:17px;display:flex;align-items:center;gap:9px;border:1px solid var(--green);color:var(--green);border-radius:5px;background:transparent;padding:10px 13px;font-size:11px}.prefer[aria-pressed=true]{background:var(--lime)}.print-note{font:10px/1.7 var(--mono);color:var(--muted);margin:15px 0 0;border-top:1px solid var(--line);padding-top:12px}.notice{margin-top:22px;padding:13px 0;border-top:1px solid var(--line);display:flex;gap:15px;font-size:10px;line-height:1.7;color:var(--muted)}.notice strong{color:var(--green);white-space:nowrap;font-weight:500}footer{border-top:1px solid var(--line);padding:17px 34px;display:flex;justify-content:space-between;font:9px var(--mono);color:var(--muted);letter-spacing:.6px}#dimension{position:absolute;right:20px;bottom:17px;font:10px var(--mono);color:var(--green);text-align:right;line-height:1.7;pointer-events:none}button:disabled{opacity:.35;cursor:default}
+@media(min-width:1450px){.viewer{height:min(76vh,820px)}}@media(max-width:1000px){header{padding:0 20px}main{padding:24px 20px}.layout{grid-template-columns:205px minmax(0,1fr);gap:14px}.details{grid-template-columns:1fr;gap:10px}.viewer{height:465px}.intro p{max-width:300px}.timeline{gap:10px}.step-select{max-width:90px}.legend{max-width:230px;gap:8px}.view-controls{max-width:155px}}@media(max-width:700px){header{height:62px;padding:0 16px}.header-meta .edition{display:none}.header-meta{font-size:8px}.brand{font-size:16px}main{padding:22px 16px 10px}.intro{display:block;margin-bottom:20px}.intro p{max-width:100%;font-size:12px;margin-top:12px}h1{font-size:32px}.layout{display:flex;flex-direction:column}.sidebar{display:contents}.concepts{display:grid;grid-template-columns:repeat(5,154px);overflow:auto;padding-bottom:6px;gap:7px}.concept{padding:12px}.concept strong{font-size:14px}.concept-top{margin-bottom:7px}.sidebar>.section-label{margin-bottom:-3px}.parameters{order:3;margin-top:7px}.parameter-grid{grid-template-columns:repeat(4,1fr)}.apply{width:auto;padding:9px 20px}.viewer{height:420px}.viewport-top{left:13px;top:12px;right:12px}.view-controls{max-width:180px}.view-controls button{font-size:9px;padding:7px}.view-caption{max-width:130px;font-size:9px}.legend{left:13px;bottom:14px;max-width:210px;font-size:8px}#dimension{font-size:8px;right:12px}.timeline{grid-template-columns:auto 1fr;gap:10px;padding:12px}.step-select{grid-column:1/-1;max-width:100%;width:100%;padding:4px 0;border-top:1px solid var(--line)}.step-text{font-size:11px;min-height:35px}.details{margin-top:18px}.notice{display:block}.notice strong{display:block;margin-bottom:4px}footer{padding:14px 16px;font-size:8px;gap:12px}.inspection{top:95px;font-size:10px;max-width:190px}}
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<header><div class="brand">FORM <span>/</span> FIELD</div><div class="header-meta"><span class="edition">WORKSHOP STUDIES / 001</span><span class="status">CASE STUDY EXPLORER</span></div></header>
+<main>
+<div class="intro"><div><div class="eyebrow">FIELD NOTES / TOOL STUDIES</div><h1>Five ways to build<br>a precise grid.</h1></div><p>Explore each jig as a case study. Rotate the model, inspect its parts, and step through the workflow to see how the system locates and advances.</p></div>
+<div class="layout">
+<aside class="sidebar"><div class="section-label"><span>SELECT A STUDY</span><span>01—05</span></div><nav class="concepts" aria-label="Jig proposals" id="concepts"></nav>
+<form class="parameters" id="parameters"><div class="section-label"><span>YOUR PEGBOARD</span><button class="text-btn" type="button" id="defaults">Reset</button></div><div class="parameter-grid">
+<label>Hole diameter<div class="field"><input name="hole" aria-label="Hole diameter in millimetres" type="number" min="3" max="30" step="0.1" value="10" required><span>mm</span></div></label>
+<label>Grid spacing<div class="field"><input name="pitch" aria-label="Grid spacing in millimetres" type="number" min="15" max="120" step="0.1" value="50" required><span>mm</span></div></label>
+<label>Board thickness<div class="field"><input name="thick" aria-label="Board thickness in millimetres" type="number" min="6" max="50" step="0.1" value="18" required><span>mm</span></div></label>
+<label>Edge offset<div class="field"><input name="edge" aria-label="Edge offset in millimetres" type="number" min="8" max="100" step="0.1" value="25" required><span>mm</span></div></label>
+</div><button class="apply" type="submit">Update geometry ↗</button><p id="error" class="error" role="alert"></p><div class="bed">PRINT BED / 180 × 180 mm<br>Footprints are per part, not assembled tools.</div></form></aside>
+<section class="workspace" aria-label="Interactive case study">
+<div class="viewer" id="viewer"><div id="loading" class="loading">Preparing the workbench…</div><div class="viewport-top"><div class="view-caption"><strong id="scene-label">01 / LEAPFROG BAR</strong><br><span id="scene-subtitle">CORNER SETUP · 7 × 7 DEMO</span></div><div class="view-controls"><button data-view="iso" aria-label="Isometric view">3D</button><button data-view="top">Top</button><button data-view="under">Underside</button><button id="explode" aria-pressed="false">Inspect</button></div></div><div id="inspection" class="inspection hidden"></div><div class="legend"><span><i class="dot"></i>Printed tool</span><span><i class="dot blue"></i>Locating pin</span><span><i class="dot orange"></i>New / active</span><span><i class="dot gray"></i>Existing hole</span></div><div id="dimension"></div></div>
+<div class="timeline"><div class="playback"><button class="icon-btn" id="restart" aria-label="Restart case study">↺</button><button class="icon-btn" id="prev" aria-label="Previous step">‹</button><button class="icon-btn" id="play" aria-label="Play case study from start to finish">▶</button><button class="icon-btn" id="next" aria-label="Next step">›</button></div><div><div class="step-heading"><span id="phase">01 / SETUP</span><span id="walk-progress">STEP 1 OF 1</span><span id="counter"></span></div><div class="step-text" id="step" aria-live="polite"></div><input type="range" id="progress" min="0" value="0" aria-label="Case study walkthrough step"></div><select class="step-select" id="step-select" aria-label="Jump to a walkthrough step"></select></div>
+<div class="details"><div><div class="eyebrow" id="category"></div><h2 id="title"></h2><p class="description" id="description"></p><div class="tags" id="tags"></div></div><div><div class="tradeoffs"><div><h3>WHY THIS ONE</h3><p id="pros"></p></div><div><h3>THE TRADE-OFF</h3><p id="cons"></p></div></div><button class="prefer" id="prefer" aria-pressed="false">☆ Mark as preferred</button></div></div><p class="print-note" id="print-note"></p>
+</section></div>
+<div class="notice"><strong>PROTOTYPES, NOT PRINT FILES.</strong><span>Use metal drill bushes, clamps, and a sacrificial backing board. Pins locate; they do not replace clamps. Calibrate fits and trial on scrap before drilling your panel. Clearance, rail play, and repeated indexing can accumulate error. No accuracy or manufacturing validation is implied.</span></div>
+</main><footer><span>FORM / FIELD — PEGBOARD JIG STUDIES</span><span>ROTATE TO UNDERSTAND. COMPARE TO CHOOSE.</span></footer>
+<script>
+window.addEventListener('error', event => { if(event.target?.tagName === 'SCRIPT' || event.message){ const el=document.getElementById('loading'); el.classList.remove('hidden'); el.textContent='The 3D viewer could not load. Check your internet connection (Three.js is loaded from a CDN), then refresh. '+(event.message||''); } },true);
+window.addEventListener('unhandledrejection',event=>{const el=document.getElementById('loading');el.classList.remove('hidden');el.textContent='Viewer error: '+event.reason;});
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const $=id=>document.getElementById(id);
+const DEFAULTS={hole:10,pitch:50,thick:18,edge:25};
+let P={...DEFAULTS};
+const N=7, key=point=>point.join(','), grid=(w,h)=>Array.from({length:w*h},(_,i)=>[i%w,Math.floor(i/w)]);
+const CONCEPTS=[
+ {name:'Leapfrog bar',sub:'Small parts. One hole at a time.',category:'01 / THE MINIMALIST',kind:'bar',seed:2,complexity:'3 tool types',rate:'1 new hole / bar placement',description:'A corner starter sets a 2 × 2 seed. Two pins lock the slim bar into neighbouring holes; the forward bush places the next. A two-pin bridge starts each fresh row.',pros:'Compact parts and an open view of the work. Two spaced pins establish the direction without relying on a panel edge.',cons:'Most repositioning. You swap between the bar and row bridge, and short-step indexing can compound drift.',print:'Starter and fence print separately. Bar and bridge use removable pins: print bodies flat, then install pins and metal bushes.'},
+ {name:'Row bridge',sub:'Copy the row. Keep it simple.',category:'02 / THE EVERYDAY TOOL',kind:'bridge',seed:2,complexity:'2 tool types',rate:'Up to 2 new holes / placement',description:'A pair of pins references the finished row. Two bushes sit exactly one pitch away. Rotate the bridge to grow the first two rows, then copy the row below across the board.',pros:'A compact, rigid layout with two references at every placement. The same bridge extends both axes.',cons:'You work from an existing row, so errors can propagate between rows. More placements than a larger grid tile.',print:'Flat bridge body with separate press-fit pins and metal bushes. The corner starter has a separate L-fence for support-free printing.'},
+ {name:'Grid tile',sub:'More holes. Fewer moves.',category:'03 / THE BATCH BUILDER',kind:'tile',seed:3,complexity:'2 tool types',rate:'Up to 6 new holes / placement',description:'A three-hole reference column anchors a 3 × 3 tile. Drill the next two columns, then overlap on the completed column. Rotate onto a finished row to start the next band.',pros:'Six guide positions per placement and fewer tool moves. A larger contact area helps steady the jig when clamped.',cons:'More material and more chip clearing. Three tight pins can bind: a relieved secondary locator and fit testing are important.',print:'Tile and starter plates print flat; pins and fences install separately. Three locating pins are nominal — tune or relieve secondary pins to avoid binding.'},
+ {name:'Indexed rail',sub:'Slide. Lock. Drill.',category:'04 / THE SLIDING SYSTEM',kind:'rail',seed:2,complexity:'Assembly + locking hardware',rate:'2 positions / rail placement',description:'Two pinned feet reference an existing pair. A keyed carriage moves along an offset rail and locks at two pitch-spaced stops. Rotate the assembly to extend either axis.',pros:'One metal bush serves both drill positions. The reference feet stay seated while the carriage moves between stops.',cons:'Highest assembly complexity. Carriage clearance, the stop lock, and rail joints introduce play that must be checked on a physical prototype.',print:'Rail, two feet, and carriage print as separate flat-oriented parts. Add removable pins, a metal bush, and a positive stop lock; none are production-dimensioned here.'},
+ {name:'Convertible jig',sub:'One body. Two jobs.',category:'05 / THE ALL-IN-ONE',kind:'convert',seed:2,complexity:'1 body + removable fittings',rate:'Up to 2 new holes / placement',description:'Start with edge fences and four guide sockets. Lift the jig, detach the fences, and replace two guide inserts with locating pins. The other sockets now extend the grid.',pros:'The same compact body does the corner setup and ongoing indexing. Fewer full-size tools to print and store.',cons:'Changing bushes for pins adds setup. Socket wear and removable-fence repeatability need testing before trusting a large panel.',print:'Print the four-socket body flat. Print two fences separately. Use removable guide/pin inserts; the inspection view shows the conversion, not a proven retention design.'}
+];
+function validateParams(p){
+ if(!Object.values(p).every(Number.isFinite))return 'Enter a finite number in every field.';
+ if(p.hole<3||p.hole>30||p.pitch<15||p.pitch>120||p.thick<6||p.thick>50||p.edge<8||p.edge>100)return 'Use holes 3–30, spacing 15–120, thickness 6–50, and offset 8–100 mm.';
+ if(p.pitch<p.hole+20)return 'Spacing must exceed hole diameter by at least 20 mm for bosses and material between sockets.';
+ if(p.edge<(p.hole+16)/2+3)return 'The edge offset is too small for the guide boss and a 3 mm margin.';
+ return '';
+}
+const transform=(pt,origin,turn)=>turn===1?[origin[0]+pt[1],origin[1]-pt[0]]:turn===-1?[origin[0]-pt[1],origin[1]+pt[0]]:[origin[0]+pt[0],origin[1]+pt[1]];
+function buildSequence(index){
+ const c=CONCEPTS[index],known=new Set(),steps=[],placements=[];
+ const add=(phase,text,tool,origin,turn,pins,guides,holes,extra={})=>steps.push({phase,text,tool,origin,turn,pins,guides,holes:[...holes],...extra});
+ const seed=grid(c.seed,c.seed),initial={tool:'starter',origin:[0,0],turn:0,pins:[],guides:seed};
+ add('Corner setup','Seat both fences against the panel edges. Clamp the starter before drilling.',initial.tool,initial.origin,0,[],seed,known);
+ for(const pt of seed){add('Drill the seed',`Drill seed hole ${key(pt.map(x=>x+1))} through the metal bush.`,initial.tool,initial.origin,0,[],seed,known,{target:pt});known.add(key(pt));}
+ add('Lift off','Lift the starter clear of the seed block before removing it.',initial.tool,initial.origin,0,[],seed,known,{lift:true});
+ if(c.kind==='convert')add('Convert the body','Detach both fences. Exchange two guide inserts for locating pins while the jig is lifted.','convert',[0,0],0,[[0,0],[1,0]],[[0,1],[1,1]],known,{lift:true,conversion:true});
+ function place(tool,origin,turn,pins,guides,label){
+  const wp=pins.map(pt=>transform(pt,origin,turn)),wg=guides.map(pt=>transform(pt,origin,turn));
+  if(wp.length<2||new Set(wp.map(key)).size<2||wp.some(pt=>!known.has(key(pt))))throw Error('Unconstrained placement: '+label);
+  if([...wp,...wg].some(([x,y])=>x<0||y<0||x>=N||y>=N))throw Error('Placement outside panel: '+label);
+  const fresh=wg.filter(pt=>!known.has(key(pt)));if(!fresh.length)return;
+  placements.push({tool,origin,turn,pins:wp,guides:wg,fresh});
+  add('Lift & position',label+' Lift clear, move above the reference holes, then align the pins.',tool,origin,turn,pins,guides,known,{lift:true});
+  add('Seat & clamp','Seat the blue locating pins in existing holes. Clamp the body before drilling.',tool,origin,turn,pins,guides,known);
+  for(const pt of fresh){add(tool==='rail'?'Lock & drill':'Drill the next holes',tool==='rail'?'Slide to the marked stop, engage the lock, then drill through the carriage bush.':'Drill the orange-marked guide. The blue pins remain in the reference holes.',tool,origin,turn,pins,guides,known,{target:pt});known.add(key(pt));}
+ }
+ const bp=[[0,0],[1,0]],bg=[[0,1],[1,1]],tp=[[0,0],[0,1],[0,2]],tg=grid(3,3).filter(pt=>pt[0]>0);
+ if(c.kind==='bar'){
+  for(let row=0;row<N;row++){
+   if(row>=2)place('bridge',[0,row-1],0,bp,bg,`Start row ${row+1} using two holes in row ${row}.`);
+   for(let col=2;col<N;col++)place('bar',[col-2,row],0,bp,[[2,0]],`Extend row ${row+1} to column ${col+1}.`);
+  }
+ }else if(c.kind==='tile'){
+  for(let band=0;band<N-1;band+=2){
+   if(band>0)place('tile',[2,band],-1,tp,tg,`Rotate onto row ${band+1} to seed the next two rows.`);
+   for(let col=2;col<N-1;col+=2)place('tile',[col,band],0,tp,tg,`Overlap column ${col+1}; extend this three-row band.`);
+  }
+ }else{
+  const tool=c.kind==='convert'?'convert':c.kind==='rail'?'rail':'bridge';
+  for(let col=2;col<N;col++)place(tool,[col-1,1],1,bp,bg,`Rotate 90° to seed column ${col+1} in the first two rows.`);
+  for(let row=2;row<N;row++)for(const col of [0,2,4,5])place(tool,[col,row-1],0,bp,bg,`Copy row ${row} into row ${row+1}, starting at column ${col+1}.`);
+ }
+ if(known.size!==N*N)throw Error('Incomplete grid: '+c.name+' '+known.size);
+ const last=steps.at(-1);add('Grid complete','All 49 holes are indexed. On a larger panel, repeat the same placements and check for drift.',last.tool,last.origin,last.turn,last.pins,last.guides,known,{complete:true,lift:true});
+ return {steps,placements};
+}
+const SEQUENCES=CONCEPTS.map((_,i)=>buildSequence(i));
+function partSizes(p,index){const c=CONCEPTS[index],margin=(p.hole+16)/2+4,starter=p.edge+(c.seed-1)*p.pitch+margin;
+ const sizes=[['Starter plate',starter,starter],['Fence',starter+5,p.thick+12]];
+ if(c.kind==='bar')sizes.push(['Bar',2*p.pitch+2*margin,2*margin],['Row bridge',p.pitch+2*margin,p.pitch+2*margin]);
+ if(c.kind==='bridge')sizes.push(['Bridge',p.pitch+2*margin,p.pitch+2*margin]);
+ if(c.kind==='tile')sizes.push(['Tile',2*p.pitch+2*margin,2*p.pitch+2*margin]);
+ if(c.kind==='rail')sizes.push(['Rail',p.pitch+2*margin,18],['Foot',2*margin,p.pitch+2*margin],['Carriage',p.hole+26,34]);
+ if(c.kind==='convert')sizes[0][0]='Convertible body';return sizes;
+}
+function runChecks(){
+ const configs=[DEFAULTS,{hole:6,pitch:35,thick:12,edge:20},{hole:12,pitch:60,thick:24,edge:30}];
+ for(const p of configs){if(validateParams(p))throw Error('Valid configuration rejected');for(let i=0;i<5;i++){const seq=buildSequence(i);for(const s of seq.steps){const known=new Set(s.holes);for(const pin of s.pins){if(!known.has(key(transform(pin,s.origin,s.turn))))throw Error('Pin has no hole');}if(s.target&&known.has(key(s.target)))throw Error('Duplicate drill');}for(const placement of seq.placements){for(const pt of placement.guides){const mm=pt.map(x=>p.edge+x*p.pitch);if(mm.some(x=>x<p.edge||x>p.edge+6*p.pitch))throw Error('Off grid');}}}}
+ if(!validateParams({...DEFAULTS,hole:30,pitch:35}))throw Error('Invalid geometry accepted');
+ if(!validateParams({...DEFAULTS,edge:8}))throw Error('Invalid edge accepted');
+ if(!validateParams({...DEFAULTS,pitch:NaN}))throw Error('NaN accepted');
+ if(partSizes({...DEFAULTS,pitch:100},2).every(([,w,h])=>w<=180&&h<=180))throw Error('Oversize not detected');
+ if(CONCEPTS.some((_,i)=>partSizes(DEFAULTS,i).some(([,w,h])=>w>180||h>180)))throw Error('Default part exceeds bed');
+ return {ok:true,concepts:SEQUENCES.map((s,i)=>({name:CONCEPTS[i].name,steps:s.steps.length,placements:s.placements.length,holes:s.steps.at(-1).holes.length,parts:partSizes(DEFAULTS,i)})),configurations:configs.length};
+}
+const CHECKS=runChecks();
+
+const container=$('viewer'),scene=new THREE.Scene();scene.background=new THREE.Color('#e9ece4');
+const cam=new THREE.PerspectiveCamera(35,1,1,12000);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;container.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-label','3D view: drag to orbit and scroll to zoom');renderer.domElement.setAttribute('role','img');
+const controls=new OrbitControls(cam,renderer.domElement);controls.enableDamping=true;controls.maxPolarAngle=Math.PI;controls.minDistance=80;controls.maxDistance=4000;
+scene.add(new THREE.HemisphereLight(0xffffff,0x9aab8b,2.6));
+const sun=new THREE.DirectionalLight(0xffffff,3.2);sun.position.set(-180,600,150);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-800,right:800,top:800,bottom:-800,near:1,far:2000});sun.shadow.bias=-.001;sun.shadow.normalBias=.6;scene.add(sun);
+const fill=new THREE.DirectionalLight(0xe9f0ff,1.6);fill.position.set(400,200,-300);scene.add(fill);
+const MAT={jig:new THREE.MeshStandardMaterial({color:'#42614a',roughness:.63}),jig2:new THREE.MeshStandardMaterial({color:'#799466',roughness:.7}),wood:new THREE.MeshStandardMaterial({color:'#d1b990',roughness:.85}),edge:new THREE.MeshStandardMaterial({color:'#b49972',roughness:.9}),bush:new THREE.MeshStandardMaterial({color:'#c4cecb',metalness:.8,roughness:.3}),pin:new THREE.MeshStandardMaterial({color:'#397d89',metalness:.35,roughness:.45}),active:new THREE.MeshStandardMaterial({color:'#d58145',roughness:.45}),existing:new THREE.MeshBasicMaterial({color:'#a4b19a'}),backing:new THREE.MeshStandardMaterial({color:'#b2baa4',roughness:1}),drill:new THREE.MeshStandardMaterial({color:'#a5b1ae',metalness:.85,roughness:.3})};
+const group=new THREE.Group();scene.add(group);let toolGroup=new THREE.Group(),boardGroup=new THREE.Group(),bitGroup=new THREE.Group();group.add(boardGroup,toolGroup,bitGroup);
+let active=0,current=0,playing=false,startTime=performance.now(),inspect=false,view='iso',preferred=null,sequence=SEQUENCES[0].steps,toolVisual=null,boardMesh=null,plugs=new Map(),rings=new Map(),dimensions=new THREE.Group(),clamps=[];
+try{const stored=localStorage.getItem('form-field-preferred');if(stored!==null&&Number.isInteger(Number(stored))&&Number(stored)>=0&&Number(stored)<5)preferred=Number(stored);}catch{}
+function add(parent,geo,mat,x=0,y=0,z=0){const mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+function clearGroup(g){const geos=new Set(),textures=new Set(),mats=new Set();g.traverse(o=>{if(o.geometry)geos.add(o.geometry);const materials=Array.isArray(o.material)?o.material:[o.material];for(const m of materials){if(m?.userData?.temporary){mats.add(m);if(m.map)textures.add(m.map);}}});g.clear();geos.forEach(x=>x.dispose());textures.forEach(x=>x.dispose());mats.forEach(x=>x.dispose());}
+function box(parent,w,h,d,mat,x=0,y=0,z=0,r=0.8){const g=new THREE.BoxGeometry(w,h,d);if(r>0){const bevel=Math.min(r,w/3,h/3,d/3);const bevelled=new THREE.BufferGeometry();const positions=[],normals=[],indices=[];const half=[w/2-bevel,h/2-bevel,d/2-bevel];for(let face=0;face<6;face++){const axis=Math.floor(face/2),sign=face%2?1:-1,others=[0,1,2].filter(a=>a!==axis),base=positions.length/3;for(const [u,v] of [[-1,-1],[1,-1],[1,1],[-1,1]]){const c=[0,0,0];c[axis]=sign*([w,h,d][axis]/2);c[others[0]]=u*half[others[0]];c[others[1]]=v*half[others[1]];positions.push(...c);normals.push(axis===0?sign:0,axis===1?sign:0,axis===2?sign:0);}indices.push(base,base+1,base+2,base,base+2,base+3);}bevelled.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));bevelled.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));bevelled.setIndex(indices);const edge=new THREE.EdgesGeometry(g);g.dispose();return add(parent,bevelled,mat,x,y,z);}return add(parent,g,mat,x,y,z);}
+function plateGeo(w,d,t,holes=[],x0=0,z0=0){
+ const s=new THREE.Shape(),r=Math.min(6,w/4,d/4);s.moveTo(x0+r,-z0);s.lineTo(x0+w-r,-z0);s.quadraticCurveTo(x0+w,-z0,x0+w,-z0-r);s.lineTo(x0+w,-z0-d+r);s.quadraticCurveTo(x0+w,-z0-d,x0+w-r,-z0-d);s.lineTo(x0+r,-z0-d);s.quadraticCurveTo(x0,-z0-d,x0,-z0-d+r);s.lineTo(x0,-z0-r);s.quadraticCurveTo(x0,-z0,x0+r,-z0);s.closePath();
+ for(const hd of holes){const h=new THREE.Path();h.absarc(hd.x,-hd.z,hd.d/2,0,Math.PI*2,false);s.holes.push(h);}
+ const g=new THREE.ExtrudeGeometry(s,{depth:t,bevelEnabled:false,curveSegments:24});g.rotateX(-Math.PI/2);return g;
+}
+const margin=()=> (P.hole+16)/2+4;
+function ring(parent,x,y,z,outer,inner,h,mat){const s=new THREE.Shape();s.absarc(0,0,outer/2,0,Math.PI*2,false);const hole=new THREE.Path();hole.absarc(0,0,inner/2,0,Math.PI*2,true);s.holes.push(hole);const geo=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:24});geo.rotateX(-Math.PI/2);return add(parent,geo,mat,x,y,z);}
+function guideStation(parent,x,z){ring(parent,x,6,z,P.hole+16,P.hole+2.5,7,MAT.jig);return ring(parent,x,6,z,P.hole+3,P.hole+.3,9,MAT.bush);}
+function locatingPin(parent,x,z){const length=Math.min(10,P.thick-2);add(parent,new THREE.CylinderGeometry((P.hole-.25)/2,(P.hole-.85)/2,length,28),MAT.pin,x,-length/2,z);add(parent,new THREE.CylinderGeometry((P.hole+5)/2,(P.hole+5)/2,5,28),MAT.pin,x,9,z);}
+function makeFence(parent,size,min){const fence=new THREE.Group();parent.add(fence);const drop=P.thick-1;box(fence,5,drop+6,size+5,MAT.jig2,min-2.5,3-drop/2,min+size/2-2.5,1.2);box(fence,size,drop+6,5,MAT.jig2,min+size/2,3-drop/2,min-2.5,1.2);for(const t of [size*.18,size*.5,size*.82]){add(fence,new THREE.CylinderGeometry(1.7,1.7,7,18),MAT.drill,min-2.5,3,t);add(fence,new THREE.CylinderGeometry(1.7,1.7,7,18),MAT.drill,t,3,min-2.5);}return fence;}
+function textSprite(parent,text,x,y,z,scale=36){const cv=document.createElement('canvas');cv.width=512;cv.height=64;const ctx=cv.getContext('2d');ctx.fillStyle='#43533d';ctx.textAlign='center';ctx.font='24px monospace';ctx.fillText(text,256,40);const tex=new THREE.CanvasTexture(cv),mat=new THREE.SpriteMaterial({map:tex,depthTest:false});mat.userData.temporary=true;const sp=new THREE.Sprite(mat);sp.position.set(x,y,z);sp.scale.set(scale*4,scale/2,1);parent.add(sp);return sp;}
+function line(parent,pts,color=0x75896a){const geom=new THREE.BufferGeometry().setFromPoints(pts.map(p=>new THREE.Vector3(...p)));const mat=new THREE.LineBasicMaterial({color});mat.userData.temporary=true;const l=new THREE.Line(geom,mat);parent.add(l);return l;}
+
+function makeBoard(){
+ clearGroup(boardGroup);plugs.clear();rings.clear();clearGroup(dimensions);group.add(dimensions);
+ const size=2*P.edge+(N-1)*P.pitch,holes=grid(N,N).map(([x,z])=>({x:P.edge+x*P.pitch,z:P.edge+z*P.pitch,d:P.hole}));
+ boardMesh=add(boardGroup,plateGeo(size,size,P.thick,holes),MAT.wood,0,-P.thick,0);
+ for(let i=1;i<5;i++){const y=-P.thick*i/5;line(boardGroup,[[0,y,0],[size,y,0],[size,y,size],[0,y,size],[0,y,0]],0xb19c7d);}
+ for(const [i,pt] of grid(N,N).entries()){const h=holes[i],plug=add(boardGroup,new THREE.CylinderGeometry(P.hole/2,P.hole/2,P.thick,28),MAT.wood,h.x,-P.thick/2,h.z);plugs.set(key(pt),plug);const r=ring(boardGroup,h.x,.2,h.z,P.hole+3,P.hole,.3,MAT.existing);r.visible=false;rings.set(key(pt),r);}
+ box(boardGroup,size+16,7,size+16,MAT.backing,size/2,-P.thick-7,size/2);
+ box(boardGroup,size*3,2,size*3,newGroundMaterial(),size/2,-P.thick-16,size/2);
+ const z=-17;line(dimensions,[[P.edge,.5,z],[P.edge+P.pitch,.5,z]]);for(const x of [P.edge,P.edge+P.pitch])line(dimensions,[[x,.5,z-4],[x,.5,z+4]]);textSprite(dimensions,P.pitch+' mm pitch',P.edge+P.pitch/2,2,z-10,13);
+ line(dimensions,[[0,.5,size+16],[P.edge,.5,size+16]]);textSprite(dimensions,P.edge+' mm edge',P.edge/2,2,size+30,12);
+ $('dimension').textContent=`Ø ${P.hole} mm · ${P.thick} mm plywood`;
+}
+function newGroundMaterial(){const m=new THREE.MeshStandardMaterial({color:'#e4e8dc',roughness:1});m.userData.temporary=true;return m;}
+function makeClamp(parent,x,z){const g=new THREE.Group();parent.add(g);g.position.set(x,0,z);box(g,9,7,28,MAT.drill,0,20,0);add(g,new THREE.CylinderGeometry(2,2,30,12),MAT.drill,0,16,10);add(g,new THREE.CylinderGeometry(5,5,3,16),MAT.active,0,1,10);box(g,18,4,5,MAT.active,0,33,10);return g;}
+
+function makeTool(s){
+ clearGroup(toolGroup);clamps=[];const root=new THREE.Group();toolGroup.add(root);const parts=new THREE.Group();root.add(parts);const m=margin(),p=P.pitch,starter=s.tool==='starter';const all=[...s.pins,...s.guides];const xs=all.map(x=>x[0]*p),zs=all.map(x=>x[1]*p),minX=starter?-P.edge:Math.min(...xs)-m,minZ=starter?-P.edge:Math.min(...zs)-m,maxX=Math.max(...xs)+m,maxZ=Math.max(...zs)+m;
+ const holes=all.map(([x,z])=>({x:x*p,z:z*p,d:P.hole+2.5}));
+ let fence=null,carriage=null,lock=null;
+ if(s.tool==='rail'){
+  for(const x of [0,p]){add(parts,plateGeo(2*m,p+2*m,6,[{x:0,z:0,d:P.hole+2.5}],-m,-m),MAT.jig,x,0,0);locatingPin(parts,x,0);}
+  box(parts,p+2*m,10,9,MAT.jig2,p/2,12,p-12);box(parts,p+2*m,10,9,MAT.jig2,p/2,12,p+12);
+  for(const x of [0,p]){box(parts,4,4,7,MAT.active,x,19,p-12);box(parts,5,5,22,MAT.bush,x,21,p+24);}
+  carriage=new THREE.Group();parts.add(carriage);add(carriage,plateGeo(P.hole+26,34,6,[{x:0,z:0,d:P.hole+2.5}],-(P.hole+26)/2,-17),MAT.jig,0,20,p);guideStation(carriage,0,p);carriage.children.at(-1).position.y+=20;carriage.children.at(-2).position.y+=20;
+  lock=box(carriage,8,7,12,MAT.active,0,30,p+22);
+ }else{
+  add(parts,plateGeo(maxX-minX,maxZ-minZ,6,holes,minX,minZ),MAT.jig);
+  for(const [x,z] of s.guides)guideStation(parts,x*p,z*p);
+  for(const [x,z] of s.pins)locatingPin(parts,x*p,z*p);
+ }
+ if(starter){fence=makeFence(parts,maxX-minX,minX);}
+ const markers=[];for(const pt of s.guides){const marker=ring(parts,pt[0]*p,15.3,pt[1]*p,P.hole+8,P.hole+4,.8,MAT.active);markers.push({marker,pt});if(s.tool==='rail')marker.visible=false;}
+ const clamp=makeClamp(root,minX+7,minZ+9);clamps.push(clamp);clamp.visible=!s.lift;
+ toolVisual={root,parts,fence,carriage,lock,markers,minX,minZ,maxX,maxZ};
+ root.position.set(P.edge+s.origin[0]*p,0,P.edge+s.origin[1]*p);root.rotation.y=s.turn*Math.PI/2;
+ if(s.conversion){const f=makeFence(root,p+P.edge+m,-P.edge);f.position.set(-p-50,60,0);f.rotation.z=-.18;toolVisual.detached=f;}
+ if(inspect){parts.position.y=25;if(fence)fence.position.set(-20,-15,-20);if(carriage)carriage.position.y+=30;}
+ for(const {marker,pt} of markers){const world=transform(pt,s.origin,s.turn);marker.visible=s.tool!=='rail'&&!s.holes.includes(key(world));}
+ clearGroup(bitGroup);const drill=new THREE.Group();bitGroup.add(drill);add(drill,new THREE.CylinderGeometry(P.hole/2,P.hole/2,42,20),MAT.drill,0,0,0);add(drill,new THREE.ConeGeometry(P.hole/2,6,20),MAT.drill,0,-24,0).rotation.z=Math.PI;add(drill,new THREE.CylinderGeometry(P.hole*.3,P.hole*.3,25,16),MAT.drill,0,32,0);toolVisual.bit=drill;
+}
+
+let previousPlacement=null;
+function stageState(s,t){
+ const vis=toolVisual,phase=Math.min(1,t/2000),smooth=x=>x*x*(3-2*x),p=P.pitch,base={x:P.edge+s.origin[0]*p,z:P.edge+s.origin[1]*p};
+ let lift=0;
+ if(s.lift&&previousPlacement&&s.phase==='Lift & position'){lift=70;{const a=smooth(Math.min(1,phase*3)),b=smooth(Math.max(0,Math.min(1,(phase-.33)*1.5)));lift=70*a;vis.root.position.x=THREE.MathUtils.lerp(previousPlacement.x,base.x,b);vis.root.position.z=THREE.MathUtils.lerp(previousPlacement.z,base.z,b);let delta=s.turn*Math.PI/2-previousPlacement.rotation;while(delta>Math.PI)delta-=2*Math.PI;while(delta<-Math.PI)delta+=2*Math.PI;vis.root.rotation.y=previousPlacement.rotation+delta*b;}}
+ else if(s.lift)lift=70*smooth(Math.min(1,phase*1.5));
+ else if(s.phase==='Seat & clamp'||s.phase==='Corner setup')lift=70*(1-smooth(Math.min(1,phase*1.5)));
+ vis.root.position.y=lift;for(const c of clamps)c.visible=!s.lift&&phase>.7&&!inspect;
+ const bit=vis.bit;bit.visible=!!s.target&&!inspect;
+ if(s.target){const x=P.edge+s.target[0]*p,z=P.edge+s.target[1]*p;const penetration=Math.sin(Math.PI*Math.max(0,Math.min(1,(phase-.15)/.7)));bit.position.set(x,60-(35+P.thick)*penetration,z);if(s.tool==='rail'){const local=s.guides.find(pt=>key(transform(pt,s.origin,s.turn))===key(s.target));vis.carriage.position.x=local[0]*p;vis.lock.position.y=phase<.15?34:30;bit.position.y+=20;}
+  const drilled=phase>.5;plugs.get(key(s.target)).visible=!drilled;rings.get(key(s.target)).visible=drilled;rings.get(key(s.target)).material=MAT.active;
+ }
+}
+
+function applyStep(index,animate=true){
+ const prior=current;
+ const old=toolVisual?.root;previousPlacement=old?{x:old.position.x,z:old.position.z,rotation:old.rotation.y}:null;
+ current=Math.max(0,Math.min(index,sequence.length-1));const s=sequence[current],known=new Set(s.holes);
+ for(const [k,plug] of plugs){plug.visible=!known.has(k);rings.get(k).visible=known.has(k);rings.get(k).material=MAT.existing;}
+ makeTool(s);startTime=performance.now()-(animate?0:2200);
+ $('phase').textContent=String(current+1).padStart(2,'0')+' / '+s.phase.toUpperCase();$('walk-progress').textContent=`STEP ${current+1} OF ${sequence.length}`;$('step').textContent=s.text;$('counter').textContent=`${known.size} / 49 HOLES`;$('progress').value=current;$('step-select').value=current;
+ $('scene-subtitle').textContent=(s.complete?'GRID COMPLETE':s.tool==='starter'?'CORNER SETUP':s.phase.toUpperCase())+' · 7 × 7 DEMO';
+ $('prev').disabled=current===0;$('next').disabled=current===sequence.length-1;
+ updateInspectText();
+ if(prior!==current)setView(view);
+}
+function updateInspectText(){const s=sequence[current];$('inspection').classList.toggle('hidden',!inspect);$('inspection').textContent=s.tool==='rail'?'Separate rail, pinned feet, and keyed carriage. Orange lock must engage before drilling. Assembly and retention are conceptual.':s.tool==='starter'?'Separate fence below the plate: each component prints flat. Hollow silver inserts are metal drill bushes. Inspect underneath to see the edge registration.':s.tool==='convert'?'The blue inserts replace two bushes. Remove the fences before indexing. Pins locate in the drilled holes; silver bushes guide the next pair.':'Blue pins project underneath into existing holes. Silver bushes guide the bit; orange rims identify unused drill positions. Clamp before drilling.';}
+function setPlaying(value){playing=value;$('play').textContent=value?'Ⅱ':'▶';$('play').setAttribute('aria-label',value?'Pause demonstration':'Play demonstration');if(value)startTime=performance.now();}
+function setView(mode){view=mode;const s=sequence[current]||{},v=toolVisual;let center=new THREE.Vector3(P.edge+(P.edge+6*P.pitch)/2,-P.thick/2,P.edge+(P.edge+6*P.pitch)/2),distance=480;if(v){const size=new THREE.Vector3(v.maxX-v.minX,38,v.maxZ-v.minZ),box=new THREE.Box3().setFromObject(v.parts);if(inspect||current===0||s.complete){if(!box.isEmpty())center=box.getCenter(new THREE.Vector3());distance=Math.max(size.x,size.y,size.z)*2.2+90;}else distance=(2*P.edge+6*P.pitch)*1.45;}controls.target.copy(center);cam.up.set(0,1,0);if(mode==='top'){cam.position.set(center.x,center.y+distance,center.z+.01);cam.up.set(0,0,-1);}else if(mode==='under'){cam.position.set(center.x-distance*.55,center.y-distance*.7,center.z+distance*.7);}else{cam.position.set(center.x-distance*.75,center.y+distance*.8,center.z+distance*.8);}controls.update();document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===mode));}
+function updatePreference(){document.querySelectorAll('.concept').forEach((b,i)=>{b.setAttribute('aria-pressed',i===active);b.querySelector('.arrow').textContent=preferred===i?'★':'↗';});$('prefer').setAttribute('aria-pressed',preferred===active);$('prefer').textContent=preferred===active?'★ Preferred proposal · saved on this browser':'☆ Mark as preferred';}
+function selectConcept(index){active=index;setPlaying(false);sequence=SEQUENCES[index].steps;const c=CONCEPTS[index];$('scene-label').textContent=String(index+1).padStart(2,'0')+' / '+c.name.toUpperCase();$('category').textContent=c.category;$('title').textContent=c.name;$('description').textContent=c.description;$('pros').textContent=c.pros;$('cons').textContent=c.cons;$('print-note').textContent=c.print;
+ const sizes=partSizes(P,index),oversize=sizes.filter(([,w,h])=>w>180||h>180),largest=[...sizes].sort((a,b)=>Math.max(b[1],b[2])-Math.max(a[1],a[2]))[0];
+ $('tags').replaceChildren();for(const txt of [c.rate,c.complexity,`${Math.ceil(largest[1])} × ${Math.ceil(largest[2])} mm largest part`,oversize.length?'Exceeds 180 mm bed':'Fits 180 × 180 mm bed']){const tag=document.createElement('span');tag.className='tag';tag.textContent=txt;$('tags').append(tag);}
+ $('print-note').textContent+=' Part footprints: '+sizes.map(([n,w,h])=>`${n} ${Math.ceil(w)} × ${Math.ceil(h)} mm`).join('; ')+'.';
+ $('error').textContent=oversize.length?'Concept remains viewable, but these parts exceed the bed: '+oversize.map(x=>x[0]).join(', ')+'. Reduce spacing or split the parts before printing.':'';
+ const options=sequence.map((s,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=`${i+1}. ${s.phase} — ${s.text}`;return opt;});$('step-select').replaceChildren(...options);$('progress').max=sequence.length-1;updatePreference();applyStep(0);setView(view);
+}
+CONCEPTS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='concept';b.setAttribute('aria-label',`Open case study ${i+1}: ${c.name}`);b.innerHTML=`<span class="concept-top"><span>PROPOSAL 0${i+1}</span><span class="arrow">↗</span></span><strong>${c.name}</strong><small>${c.sub}</small>`;b.addEventListener('click',()=>selectConcept(i));$('concepts').append(b);});
+$('prefer').onclick=()=>{preferred=preferred===active?null:active;try{if(preferred===null)localStorage.removeItem('form-field-preferred');else localStorage.setItem('form-field-preferred',String(preferred));}catch{}updatePreference();};
+$('prev').onclick=()=>{setPlaying(false);applyStep(current-1);};$('next').onclick=()=>{setPlaying(false);applyStep(current+1);};$('restart').onclick=()=>{setPlaying(false);applyStep(0);};$('play').onclick=()=>{if(!playing&&current===sequence.length-1)applyStep(0);setPlaying(!playing);};
+$('progress').oninput=e=>{setPlaying(false);applyStep(Number(e.target.value),false);};$('step-select').onchange=e=>{setPlaying(false);applyStep(Number(e.target.value));};
+$('explode').onclick=()=>{inspect=!inspect;setPlaying(false);$('explode').setAttribute('aria-pressed',inspect);applyStep(current,false);};
+for(const b of document.querySelectorAll('[data-view]'))b.onclick=()=>setView(b.dataset.view);
+function applyParams(p){const error=validateParams(p);if(error){$('error').textContent=error;return false;}P=p;makeBoard();selectConcept(active);return true;}
+$('parameters').onsubmit=e=>{e.preventDefault();applyParams(Object.fromEntries(Array.from(new FormData(e.target).entries(),([k,v])=>[k,Number(v)])));};
+$('defaults').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS))$('parameters').elements.namedItem(k).value=v;applyParams({...DEFAULTS});};
+const observer=new ResizeObserver(()=>{const w=container.clientWidth,h=container.clientHeight;cam.aspect=w/h;cam.updateProjectionMatrix();renderer.setSize(w,h);});observer.observe(container);
+makeBoard();selectConcept(0);$('loading').classList.add('hidden');
+let lastFrame=0;function loop(now){requestAnimationFrame(loop);const elapsed=now-startTime;stageState(sequence[current],elapsed);if(playing&&!inspect&&elapsed>2600){if(current<sequence.length-1)applyStep(current+1);else setPlaying(false);}controls.update();if(now-lastFrame>14){renderer.render(scene,cam);lastFrame=now;}}requestAnimationFrame(loop);
+window.jigExplorer={checks:CHECKS,runChecks,getState:()=>({active,current,playing,inspect,view,dimensions:{...P},step:sequence[current],steps:sequence.length,preferred,renderer:renderer.info.memory}),verifyWorld:()=>{const s=sequence[current];toolVisual.root.updateMatrixWorld(true);return [...s.pins,...s.guides].map(pt=>{const world=toolVisual.root.localToWorld(new THREE.Vector3(pt[0]*P.pitch,0,pt[1]*P.pitch)),g=transform(pt,s.origin,s.turn);return Math.abs(world.x-(P.edge+g[0]*P.pitch))<.001&&Math.abs(world.z-(P.edge+g[1]*P.pitch))<.001;}).every(Boolean);},finish:()=>{setPlaying(false);applyStep(sequence.length-1,false);}};
+</script>
+</body>
+</html>

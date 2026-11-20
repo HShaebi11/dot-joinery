@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import { SITE } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = SITE.tagline } = Astro.props;
+const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.org}`;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3ee" />
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23365d45'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='14' fill='%23e4eacb' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="wordmark" href="/">
+          DOT <span>joinery</span>
+          <small>{SITE.org}</small>
+        </a>
+        <nav class="nav">
+          <a href="/projects/" aria-current={path.startsWith('/projects') ? 'page' : undefined}>Projects</a>
+          <a href="/skills/" aria-current={path.startsWith('/skills') ? 'page' : undefined}>Skills</a>
+          <a href={SITE.repoUrl} rel="noopener">GitHub</a>
+          <a class="nav-cta" href="/skills/">Add skills</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-brand">
+          <span class="wordmark">DOT <span>joinery</span></span>
+          <p>
+            A public workshop notebook from the {SITE.org} — parametric CAD
+            sources, sliced print files, interactive case studies, and agent
+            skills that teach AI tools the same workflow.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="/projects/">Projects</a>
+          <a href="/skills/">Skills</a>
+          <a href={SITE.repoUrl} rel="noopener">Repository</a>
+          <a href={SITE.skillsSh} rel="noopener">skills.sh</a>
+        </div>
+        <div class="footer-meta">JOINERY BY DEPARTMENT OF THINGS — ALL FILES OPEN, ALL DESIGNS PARAMETRIC</div>
+      </div>
+    </footer>
+  </body>
+</html>

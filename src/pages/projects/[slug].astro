@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import InstallButton from '../../components/InstallButton.astro';
+import { projects, STATUS_LABELS, type Project } from '../../data/projects';
+import { getProjectMarkdown, getCaseStudy, getSkills, renderMarkdown } from '../../data/content';
+import { SITE } from '../../data/site';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const filesBase = `/files/${project.slug}/`;
+const readme = getProjectMarkdown(project.slug);
+const caseStudy = getCaseStudy(project.slug);
+const folderUrl = `${SITE.repoUrl}/tree/main/public/files/${project.slug}`;
+const primarySkill = getSkills()[0]?.slug;
+
+// README/case-study links are relative to the project folder. Point asset
+// links at the deployed /files/ mount and .md links at the GitHub blob view.
+function rewriteLinks(html: string): string {
+  const ghBase = `${SITE.repoUrl}/blob/main/public/files/${project.slug}/`;
+  return html.replace(/(href|src)="([^"]+)"/g, (match, attr: string, url: string) => {
+    if (/^(https?:|mailto:|#|\/|data:)/.test(url)) return match;
+    const target = url.endsWith('.md') ? `${ghBase}${url}` : `${filesBase}${url}`;
+    return `${attr}="${target}"`;
+  });
+}
+
+const readmeHtml = readme ? rewriteLinks(renderMarkdown(readme)) : null;
+const caseStudyHtml = caseStudy ? rewriteLinks(renderMarkdown(caseStudy)) : null;
+---
+
+<Base title={project.title} description={project.description}>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="eyebrow">{project.series}</span>
+      <h1>{project.title}</h1>
+      <p class="lede">{project.tagline} — {project.description}</p>
+      <div class="meta-row">
+        <span class="chip">{STATUS_LABELS[project.status]}</span>
+        {project.tags.map((t) => <span class="tag">{t}</span>)}
+      </div>
+      <div class="detail-actions">
+        {project.viewer && (
+          <a class="btn solid" href={`${filesBase}${project.viewer}`}>Open interactive viewer</a>
+        )}
+        <a class="btn" href={folderUrl} rel="noopener">Browse files on GitHub</a>
+        {readme && <a class="btn ghost" href={`${filesBase}README.md`}>README.md</a>}
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <article class="prose">
+        {readmeHtml ? <Fragment set:html={readmeHtml} /> : <p>No README yet.</p>}
+        {caseStudyHtml && (
+          <Fragment>
+            <hr />
+            <span class="eyebrow">Deeper dive</span>
+            <Fragment set:html={caseStudyHtml} />
+          </Fragment>
+        )}
+      </article>
+
+      <aside class="side-stack">
+        {project.highlights && (
+          <div class="side-card">
+            <h4>Highlights</h4>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              {project.highlights.map((h) => <span class="chip">{h}</span>)}
+            </div>
+          </div>
+        )}
+        <div class="side-card">
+          <h4>Files</h4>
+          <div class="file-list">
+            <a href={`${filesBase}README.md`}><span>README.md</span><span class="ext">md</span></a>
+            {project.viewer && (
+              <a href={`${filesBase}${project.viewer}`}><span>Interactive viewer</span><span class="ext">html</span></a>
+            )}
+            <a href={folderUrl} rel="noopener"><span>Full folder on GitHub</span><span class="ext">↗</span></a>
+          </div>
+        </div>
+        {primarySkill && (
+          <div class="side-card">
+            <h4>Agent skills</h4>
+            <p style="font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 12px;">
+              These projects were designed with parametric-CAD agent skills.
+              Install them into your tools:
+            </p>
+            <InstallButton skill={primarySkill} compact />
+          </div>
+        )}
+      </aside>
+    </div>
+  </div>
+</Base>

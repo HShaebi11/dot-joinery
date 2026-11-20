@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import InstallButton from '../../components/InstallButton.astro';
+import { getSkills, splitFrontmatter } from '../../data/content';
+import { SITE } from '../../data/site';
+
+const skills = getSkills().map((s) => ({
+  slug: s.slug,
+  ...splitFrontmatter(s.raw).data,
+}));
+---
+
+<Base
+  title="Skills"
+  description="Reusable agent skills for parametric CAD and 3D printing — install into Claude Code, Cursor, Devin, Codex, and 70+ agents with npx skills add."
+>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="eyebrow">{SITE.org}</span>
+      <h1>Agent skills</h1>
+      <p class="lede">
+        Reusable instructions in the open <code>SKILL.md</code> format that
+        teach coding agents how to design parametric, FDM-printable CAD.
+        Pick your agent, copy the command, done.
+      </p>
+    </div>
+
+    <div class="skill-grid" style="padding: 44px 0 20px;">
+      {skills.map((s) => (
+        <div class="skill-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div class="skill-icon">{s.name?.[0]?.toUpperCase() ?? 'S'}</div>
+            <span class="meta">skills/{s.slug}/SKILL.md</span>
+          </div>
+          <div>
+            <h3>{s.name ?? s.slug}</h3>
+            <p class="desc">{s.description}</p>
+          </div>
+          <InstallButton skill={s.slug} compact />
+          <div class="meta"><a href={`/skills/${s.slug}/`}>Read the full skill →</a></div>
+        </div>
+      ))}
+    </div>
+
+    <div class="about-grid" style="margin-top: 56px;">
+      <div class="about-card">
+        <span class="num">i</span>
+        <h3>What is a skill?</h3>
+        <p>
+          A skill is a markdown playbook — design principles, parameter
+          patterns, manufacturing rules — that an agent loads when a task
+          matches. Ours encode how to drive the Fusion 360 Python API for
+          printable parts.
+        </p>
+      </div>
+      <div class="about-card">
+        <span class="num">ii</span>
+        <h3>How to install</h3>
+        <p>
+          Run <code>npx skills add {SITE.repo}</code> in any project, or use
+          the buttons above for a ready-made command. Works with Claude Code,
+          Cursor, Devin, Codex, Windsurf, OpenCode, and 70+ agents.
+        </p>
+      </div>
+      <div class="about-card">
+        <span class="num">iii</span>
+        <h3>Contribute</h3>
+        <p>
+          Skills live in <code>skills/</code> in the repository. Add a folder
+          with a <code>SKILL.md</code> (name + description frontmatter) and it
+          appears here automatically.
+        </p>
+      </div>
+    </div>
+  </div>
+</Base>

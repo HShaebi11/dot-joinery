@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ee">
+  <title>Pegboard Jig V3 — Configurator & Case Study</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    :root{--paper:#f5f3ee;--ink:#252d29;--muted:#737a72;--line:#dcded5;--green:#365d45;--green2:#78916c;--lime:#e4eacb;--orange:#d58145;--blue:#397d89;--wood:#d1b990;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:14px 'DM Sans',sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #9ba85e;outline-offset:3px}
+    header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1500px)/2));gap:20px}.brand{font:700 19px 'Space Grotesk',sans-serif;letter-spacing:-.7px}.brand span{color:var(--green)}.header-right{display:flex;align-items:center;gap:18px;color:var(--muted);font:10px var(--mono);letter-spacing:1px}.badge{border:1px solid #cdd3bd;color:var(--green);border-radius:30px;padding:8px 11px;white-space:nowrap}
+    main{max-width:1500px;margin:auto;padding:32px 30px 50px}.eyebrow{font:10px var(--mono);letter-spacing:1.7px;text-transform:uppercase;color:var(--green)}.hero{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:26px}.hero h1{font:500 clamp(32px,4vw,52px)/1.05 'Space Grotesk',sans-serif;letter-spacing:-2px;margin:10px 0 0;max-width:700px}.hero p{max-width:440px;color:var(--muted);line-height:1.75;font-size:13px;margin:0 0 3px}
+    .workbench{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;align-items:start}.panel{background:#fbfaf6;border:1px solid var(--line);border-radius:10px}.settings{padding:19px 20px;position:sticky;top:14px}.panel-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.panel-heading h2{font:500 16px 'Space Grotesk',sans-serif;margin:0}.text-button{border:0;background:none;color:var(--green);font-size:11px;text-decoration:underline;text-underline-offset:3px;padding:4px}.group-title{border-top:1px solid var(--line);padding-top:15px;margin:15px 0 10px;display:flex;align-items:center;justify-content:space-between;font:10px var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 13px}.field{min-width:0}.field label{display:block;font-size:10px;color:var(--muted);margin-bottom:5px}.input-wrap{display:flex;align-items:center;border-bottom:1px solid #c6cbbf}.input-wrap input,.input-wrap select{min-width:0;width:100%;border:0;background:transparent;padding:7px 0;color:var(--ink);font:13px var(--mono);appearance:none}.input-wrap span{font:9px var(--mono);color:var(--muted);white-space:nowrap}.field.full{grid-column:1/-1}.field select{cursor:pointer}.derived{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.metric{background:#f0f1e9;border-radius:6px;padding:10px}.metric strong{display:block;font:500 18px var(--mono);color:var(--green)}.metric span{font-size:9px;color:var(--muted)}.printer-note{font:10px/1.6 var(--mono);color:var(--muted);margin:12px 0 0}.fit-status{margin-top:10px;padding:9px 10px;border-radius:5px;background:#eef0e6;color:var(--green);font-size:10px;line-height:1.5}.fit-status.error{background:#f9e9df;color:#9f412b}.fit-status.warn{background:#f6f0dc;color:#755a1c}.advanced{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.advanced summary{font:10px var(--mono);letter-spacing:.7px;text-transform:uppercase;color:var(--green);cursor:pointer;padding:5px 0}.advanced .fields{margin-top:11px}.actions{display:flex;gap:8px;margin-top:14px}.primary,.secondary{border:1px solid var(--green);border-radius:5px;padding:9px 11px;font-size:10px}.primary{background:var(--green);color:#fff;flex:1}.secondary{background:transparent;color:var(--green)}.future-note{margin-top:13px;border-left:2px solid var(--orange);padding:2px 0 2px 9px;color:var(--muted);font-size:10px;line-height:1.5}
+    .viewer-panel{overflow:hidden}.viewer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid var(--line)}.viewer-label{font:10px var(--mono);color:var(--muted);line-height:1.65}.viewer-label strong{font-weight:500;color:var(--green);letter-spacing:.4px}.view-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.view-actions button{border:1px solid #cdd4c5;border-radius:4px;background:#f5f5ed;padding:7px 9px;font:9px var(--mono)}.view-actions button[aria-pressed=true]{background:var(--green);color:white}.viewer{height:min(61vh,670px);min-height:440px;position:relative;background:#e9ece4;isolation:isolate}.viewer canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}.loading{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:25px;color:var(--green);background:#e9ece4}.loading.hidden{display:none}.legend{position:absolute;left:16px;bottom:14px;display:flex;gap:12px;flex-wrap:wrap;font:9px var(--mono);color:#53604f;pointer-events:none}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.dot.orange{background:var(--orange)}.dot.blue{background:var(--blue)}.dot.gray{background:#8f9b91}.scene-dimension{position:absolute;right:16px;bottom:13px;text-align:right;font:10px/1.6 var(--mono);color:var(--green);pointer-events:none}.timeline{padding:13px 16px;display:grid;grid-template-columns:auto minmax(0,1fr) 140px;gap:14px;align-items:center;background:#fbfaf6;border-top:1px solid var(--line)}.playback{display:flex;gap:5px}.icon-button{width:31px;height:31px;border:1px solid var(--line);border-radius:5px;background:transparent;font:14px var(--mono)}#play{width:36px;background:var(--green);color:white;border-color:var(--green)}.step-heading{display:flex;justify-content:space-between;gap:10px;font:9px var(--mono);color:var(--green)}.step-text{font-size:11px;line-height:1.5;margin-top:4px;min-height:17px}#progress{display:block;width:100%;height:3px;margin:8px 0 0;accent-color:var(--green)}#step-select{width:100%;border:0;border-bottom:1px solid #c6cbbf;background:transparent;padding:7px 2px;color:var(--muted);font-size:10px}.case-summary{display:flex;gap:9px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line);background:#f6f5ef}.summary-tag{font:9px var(--mono);color:var(--green);border:1px solid #d4daca;border-radius:4px;padding:6px 8px}
+    .case-study{margin-top:54px}.section-intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:18px}.section-intro h2{font:500 clamp(25px,3vw,35px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1px;margin:8px 0 0}.section-intro p{max-width:440px;color:var(--muted);font-size:12px;line-height:1.7;margin:0}.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.case-card{background:#fbfaf6;border:1px solid var(--line);border-radius:8px;padding:17px 18px}.case-card .number{font:10px var(--mono);color:var(--orange)}.case-card h3{font:500 16px 'Space Grotesk',sans-serif;margin:9px 0 8px}.case-card p{font-size:11px;line-height:1.75;color:var(--muted);margin:0}.case-wide{grid-column:span 2}.formula{margin-top:16px;background:#e9ece4;border-radius:7px;padding:15px 18px;display:grid;grid-template-columns:1fr 1fr;gap:10px 25px}.formula strong{display:block;font:10px var(--mono);color:var(--green);margin-bottom:5px}.formula span{font-size:11px;line-height:1.6;color:var(--muted)}.downloads{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.downloads a{font:10px var(--mono);color:var(--green);text-decoration:none;border:1px solid #cdd4c5;border-radius:4px;padding:8px 10px}.downloads a:hover{background:#eef0e6}.doc-section{margin-top:48px;padding-top:25px;border-top:1px solid var(--line)}.doc-section h2{font:500 26px 'Space Grotesk',sans-serif;letter-spacing:-.7px;margin:8px 0 12px}.doc-section p,.doc-section li{max-width:980px;color:var(--muted);font-size:12px;line-height:1.8}.doc-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px}.doc-columns h3{font:500 15px 'Space Grotesk',sans-serif;margin:18px 0 7px}.doc-columns ul{padding-left:18px}.callout{margin-top:17px;border-left:3px solid var(--orange);padding:10px 14px;background:#f8efe4;border-radius:0 5px 5px 0;max-width:1000px;color:#65523e;font-size:11px;line-height:1.7}.screenreader{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    footer{border-top:1px solid var(--line);padding:18px max(24px,calc((100vw - 1500px)/2));display:flex;justify-content:space-between;gap:15px;color:var(--muted);font:9px var(--mono);letter-spacing:.6px}
+    @media(max-width:1000px){main{padding:27px 20px 42px}.workbench{grid-template-columns:285px minmax(0,1fr);gap:12px}.settings{padding:16px}.viewer{height:510px}.timeline{grid-template-columns:auto 1fr}.timeline select{grid-column:1/-1}.hero{align-items:flex-start}.hero p{max-width:330px}.case-grid{grid-template-columns:1fr 1fr}.case-wide{grid-column:span 2}}
+    @media(max-width:720px){header{height:60px;padding:0 16px}.header-right{font-size:8px;gap:8px}.header-right .edition{display:none}main{padding:23px 15px 35px}.hero{display:block}.hero h1{font-size:36px}.hero p{margin-top:14px;max-width:none}.workbench{display:flex;flex-direction:column}.settings{position:static;width:100%}.viewer-panel{width:100%}.viewer{height:430px;min-height:350px}.viewer-head{padding:12px}.viewer-label{max-width:130px}.view-actions{max-width:220px}.view-actions button{padding:7px}.timeline{grid-template-columns:auto minmax(0,1fr);gap:9px;padding:11px}.timeline select{grid-column:1/-1}.step-text{min-height:32px}.case-study{margin-top:38px}.section-intro{display:block}.section-intro p{margin-top:12px}.case-grid{grid-template-columns:1fr}.case-wide{grid-column:auto}.formula,.doc-columns{grid-template-columns:1fr}.doc-section{margin-top:36px}.downloads a{font-size:9px}footer{padding:15px;display:block;line-height:1.8}footer span{display:block}}
+  </style>
+  <style>
+    .printset{margin-top:54px}
+    .parts-panel{overflow:hidden}
+    .part-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfaf6}
+    .part-tab{border:1px solid #cdd4c5;background:#f5f5ed;border-radius:5px;padding:8px 11px;font:9px var(--mono);letter-spacing:.7px}
+    .part-tab:hover{background:#eef0e6}
+    .part-tab[aria-pressed=true]{background:var(--green);color:#fff;border-color:var(--green)}
+    .parts-viewer{height:min(56vh,620px);min-height:420px}
+    .pp-bar{display:flex;align-items:center;gap:14px;padding:11px 16px;border-top:1px solid var(--line);background:#fbfaf6}
+    .pp-bar .lbl{font:9px var(--mono);color:var(--green);letter-spacing:1px;white-space:nowrap}
+    .pp-bar input[type=range]{flex:1;min-width:80px;accent-color:var(--green)}
+    .pp-hint{font:10px var(--mono);color:var(--muted);letter-spacing:.4px}
+    .pp-views{display:flex;gap:5px;margin-left:auto}
+    .pp-views button{border:1px solid #cdd4c5;border-radius:4px;background:#f5f5ed;padding:6px 9px;font:9px var(--mono)}
+    .pp-views button[aria-pressed=true]{background:var(--green);color:#fff}
+    #pp-steps .step-text{min-height:44px}
+    .part-meta{display:flex;flex-wrap:wrap;gap:7px 22px;align-items:center;padding:12px 16px;border-top:1px solid var(--line);background:#f0f1e9;font:10px var(--mono);color:var(--muted)}
+    .part-meta strong{color:var(--green);font-weight:500;letter-spacing:.6px}
+    .part-meta a{color:var(--green);text-decoration:none;border:1px solid #cdd4c5;border-radius:4px;padding:5px 8px;background:#f5f5ed}
+    .part-meta a:hover{background:#eef0e6}
+    .part-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    .part-card{background:#fbfaf6;border:1px solid var(--line);border-radius:8px;padding:15px 16px}
+    .part-card .k{font:10px var(--mono);color:var(--orange);letter-spacing:1px}
+    .part-card h3{font:500 15px 'Space Grotesk',sans-serif;margin:8px 0 5px}
+    .part-card .pdims{font:10px var(--mono);color:var(--green);margin-bottom:8px}
+    .part-card p{font-size:11px;line-height:1.7;color:var(--muted);margin:0}
+    @media(max-width:1000px){.part-cards{grid-template-columns:1fr 1fr}.parts-viewer{height:480px}}
+    @media(max-width:720px){.part-cards{grid-template-columns:1fr}.parts-viewer{height:400px;min-height:340px}.part-tabs{padding:11px}.part-tab{padding:7px 9px}}
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <header>
+    <div class="brand">FORM <span>/</span> FIELD</div>
+    <div class="header-right"><span class="edition">PEGBOARD TOOLING / V3</span><span class="badge">CONFIGURATOR + CASE STUDY</span></div>
+  </header>
+  <main>
+    <section class="hero">
+      <div><div class="eyebrow">CUSTOM TOOL DESIGN · 01</div><h1>Set the pattern.<br>Build the jig around it.</h1></div>
+      <p>Configure a square pegboard grid, size the four-pin indexing tile for the A1 mini, and walk through the drilling sequence from the first corner holes to the finished panel.</p>
+    </section>
+
+    <section class="workbench" aria-label="Pegboard jig configurator">
+      <form class="panel settings" id="settings-form">
+        <div class="panel-heading"><h2>Your board</h2><button class="text-button" type="button" id="reset-settings">Reset</button></div>
+        <div class="fields">
+          <div class="field"><label for="board-cols">Holes across</label><div class="input-wrap"><input id="board-cols" name="boardCols" type="number" min="2" max="100" step="1" value="10"><span>count</span></div></div>
+          <div class="field"><label for="board-rows">Holes down</label><div class="input-wrap"><input id="board-rows" name="boardRows" type="number" min="2" max="100" step="1" value="10"><span>count</span></div></div>
+          <div class="field"><label for="hole-d">Finished hole</label><div class="input-wrap"><input id="hole-d" name="holeD" type="number" min="3" max="30" step="0.1" value="10"><span>mm</span></div></div>
+          <div class="field"><label for="pitch">Centre spacing</label><div class="input-wrap"><input id="pitch" name="pitch" type="number" min="15" max="120" step="0.1" value="50"><span>mm</span></div></div>
+          <div class="field"><label for="edge-offset">First hole from edge</label><div class="input-wrap"><input id="edge-offset" name="edgeOffset" type="number" min="5" max="100" step="0.1" value="25"><span>mm</span></div></div>
+          <div class="field"><label for="panel-thickness">Panel thickness</label><div class="input-wrap"><input id="panel-thickness" name="panelT" type="number" min="3" max="50" step="0.1" value="18"><span>mm</span></div></div>
+        </div>
+
+        <div class="group-title"><span>Cutter</span><span>V3 / 01</span></div>
+        <div class="fields">
+          <div class="field full"><label for="cutter">Drill setup</label><div class="input-wrap"><select id="cutter" name="cutter"><option value="twist">Ordinary twist drill + metal guide bush</option></select></div></div>
+        </div>
+
+        <div class="group-title"><span>Indexing tile</span><span id="max-layout">MAX 4 × 4</span></div>
+        <div class="fields">
+          <div class="field"><label for="tile-cols">Stations across</label><div class="input-wrap"><input id="tile-cols" name="tileCols" type="number" min="3" max="8" step="1" value="4"><span>count</span></div></div>
+          <div class="field"><label for="tile-rows">Stations down</label><div class="input-wrap"><input id="tile-rows" name="tileRows" type="number" min="3" max="8" step="1" value="4"><span>count</span></div></div>
+        </div>
+
+        <details class="advanced">
+          <summary>Guide and pin fits</summary>
+          <div class="fields">
+            <div class="field"><label for="bush-od">Bush outside diameter</label><div class="input-wrap"><input id="bush-od" name="bushOd" type="number" min="6" max="40" step="0.1" value="12"><span>mm</span></div></div>
+            <div class="field"><label for="bush-id">Bush inside diameter</label><div class="input-wrap"><input id="bush-id" name="bushId" type="number" min="3" max="30" step="0.1" value="10"><span>mm</span></div></div>
+            <div class="field"><label for="seat-d">Printed bush seat</label><div class="input-wrap"><input id="seat-d" name="seatD" type="number" min="6" max="40" step="0.1" value="11.9"><span>mm</span></div></div>
+            <div class="field"><label for="bush-seat-h">Bush seat depth</label><div class="input-wrap"><input id="bush-seat-h" name="bushSeatH" type="number" min="2" max="8" step="0.1" value="8"><span>mm</span></div></div>
+            <div class="field"><label for="pin-clearance">Pin undersize</label><div class="input-wrap"><input id="pin-clearance" name="pinClearance" type="number" min="0" max="1.5" step="0.05" value="0.2"><span>mm</span></div></div>
+            <div class="field"><label for="pin-mount-clearance">Pin socket clearance</label><div class="input-wrap"><input id="pin-mount-clearance" name="pinMountClearance" type="number" min="0" max="1" step="0.05" value="0.25"><span>mm</span></div></div>
+          </div>
+        </details>
+
+        <div class="derived" aria-live="polite">
+          <div class="metric"><strong id="total-holes">100</strong><span>holes on board</span></div>
+          <div class="metric"><strong id="guide-count">12</strong><span>guides per pass</span></div>
+          <div class="metric"><strong id="board-size">500 × 500</strong><span>nominal board size · mm</span></div>
+          <div class="metric"><strong id="tile-size">170 × 170</strong><span>tile footprint · mm</span></div>
+        </div>
+        <p class="printer-note">A1 MINI BED / 180 × 180 mm<br>Max layout respects a 4 mm edge margin.</p>
+        <div class="fit-status" id="fit-status" role="status">4×4 fits. Four pins + twelve drill guides.</div>
+        <div class="actions"><button class="primary" type="button" id="download-settings">Download settings JSON</button><button class="secondary" type="submit">Apply</button></div>
+        <p class="future-note">Forstner and hole-saw cutters need a pilot guide and wider cutter clearance. That profile is planned after the twist-drill workflow.</p>
+      </form>
+
+      <section class="panel viewer-panel" aria-label="Interactive 3D model and case study walkthrough">
+        <div class="viewer-head">
+          <div class="viewer-label"><strong id="scene-title">01 / CORNER STARTER</strong><br><span id="scene-subtitle">2×2 SEED · 4 HOLES</span></div>
+          <div class="view-actions" aria-label="3D view controls">
+            <button type="button" data-view="iso" aria-pressed="true">3D</button>
+            <button type="button" data-view="top" aria-pressed="false">Top</button>
+            <button type="button" data-view="starter" aria-pressed="false">Starter</button>
+            <button type="button" data-view="tile" aria-pressed="false">Index tile</button>
+          </div>
+        </div>
+        <div class="viewer" id="viewer">
+          <div class="loading" id="loading">Preparing the interactive model…</div>
+          <div class="legend"><span><i class="dot"></i>Jig body</span><span><i class="dot blue"></i>Locating pins</span><span><i class="dot orange"></i>Drill now</span><span><i class="dot gray"></i>Existing / uncut</span></div>
+          <div class="scene-dimension" id="scene-dimension">Ø10 mm holes<br>50 mm pitch</div>
+        </div>
+        <div class="timeline">
+          <div class="playback"><button class="icon-button" id="restart" aria-label="Restart case study">↺</button><button class="icon-button" id="prev" aria-label="Previous step">‹</button><button class="icon-button" id="play" aria-label="Play case study">▶</button><button class="icon-button" id="next" aria-label="Next step">›</button></div>
+          <div><div class="step-heading"><span id="phase">STEP 1 / CORNER SETUP</span><span id="progress-label">1 OF 1</span></div><div class="step-text" id="step-text" aria-live="polite"></div><input type="range" id="progress" min="0" max="1" value="0" aria-label="Case study step"></div>
+          <select id="step-select" aria-label="Jump to a case study step"></select>
+        </div>
+        <div class="case-summary"><span class="summary-tag" id="case-hole-count">0 / 100 drilled</span><span class="summary-tag" id="case-pass-count">0 indexing passes</span><span class="summary-tag" id="case-step-location">STARTER AT CORNER</span></div>
+      </section>
+    </section>
+
+    <section class="printset" id="print-set">
+      <div class="section-intro"><div><div class="eyebrow">PRINT SET / PARTS BREAKDOWN</div><h2>Four prints. Two tools.</h2></div><p>Select a piece to inspect it at print orientation, explode an assembly, or step through how each tool goes together. Dimensions follow the configurator settings.</p></div>
+      <div class="panel parts-panel">
+        <div class="part-tabs" id="part-tabs" role="tablist" aria-label="Printed parts and assemblies"></div>
+        <div class="viewer parts-viewer" id="parts-viewer">
+          <div class="legend"><span><i class="dot"></i>Printed body</span><span><i class="dot blue"></i>Locating pins</span><span><i class="dot gray"></i>Metal bush</span></div>
+          <div class="scene-dimension" id="part-dimension"></div>
+        </div>
+        <div class="pp-bar" id="pp-explode" hidden><span class="lbl">ASSEMBLED</span><input type="range" id="pp-explode-range" min="0" max="100" value="0" aria-label="Explode or assemble the tool"><span class="lbl">EXPLODED</span></div>
+        <div class="timeline" id="pp-steps" hidden>
+          <div class="playback"><button class="icon-button" id="pp-restart" aria-label="Restart assembly steps">↺</button><button class="icon-button" id="pp-prev" aria-label="Previous assembly step">‹</button><button class="icon-button" id="pp-play" aria-label="Play assembly steps">▶</button><button class="icon-button" id="pp-next" aria-label="Next assembly step">›</button></div>
+          <div><div class="step-heading"><span id="pp-phase">ASSEMBLY</span><span id="pp-count">1 / 5</span></div><div class="step-text" id="pp-text" aria-live="polite"></div></div>
+        </div>
+        <div class="pp-bar" id="pp-hint"><span class="pp-hint">Drag to orbit · scroll to zoom · right-drag to pan</span><span class="pp-views"><button type="button" data-pview="iso" aria-pressed="true">ISO</button><button type="button" data-pview="top">TOP</button></span></div>
+        <div class="part-meta"><strong id="pm-name"></strong><span id="pm-sub"></span><span id="pm-dims"></span><span id="pm-print"></span><span id="pm-files"></span></div>
+      </div>
+      <div class="part-cards">
+        <article class="part-card"><div class="k">PART / 01</div><h3>Corner starter plate</h3><div class="pdims" id="pc-plate"></div><p>Flat guide plate carrying the 2×2 seed: four metal-bush seats, two clamp holes, and pockets that receive the fence tabs.</p></article>
+        <article class="part-card"><div class="k">PART / 02</div><h3>Corner fence</h3><div class="pdims" id="pc-fence"></div><p>Separate L wall that registers against both board edges. Its tabs drop into the plate pockets; glue square after a dry fit.</p></article>
+        <article class="part-card"><div class="k">PART / 03</div><h3>Indexing tile</h3><div class="pdims" id="pc-tile"></div><p>Ribbed body with four pin sockets and a field of drill guides. Prints flat so the tile stays rigid at 170 mm.</p></article>
+        <article class="part-card"><div class="k">PART / 04</div><h3>Locating pin set</h3><div class="pdims" id="pc-pins"></div><p>Four removable pins printed in one plate. Press into the tile sockets, chamfered end down, to carry the seed forward.</p></article>
+      </div>
+    </section>
+
+    <section class="case-study" id="case-study">
+      <div class="section-intro"><div><div class="eyebrow">CASE STUDY / TWO-TOOL SEED + TILE</div><h2>From one true corner to a repeatable grid.</h2></div><p>The design separates two jobs: establish a trustworthy first pattern, then use that finished pattern as the reference for every later move.</p></div>
+      <div class="case-grid">
+        <article class="case-card"><div class="number">01 / REGISTER</div><h3>Start from the panel corner</h3><p>The corner starter's L fence bears on both outside edges. Four metal-bushed guides put down a 2×2 seed at the selected edge offset and pitch. Clamp the plate before drilling.</p></article>
+        <article class="case-card"><div class="number">02 / MATCH</div><h3>Carry the same 2×2 pattern</h3><p>The indexing tile has four pins in the same square spacing as the starter's four seed holes. Seating all four pins constrains the tile in both directions and reduces rocking during the next pass.</p></article>
+        <article class="case-card"><div class="number">03 / BATCH</div><h3>Drill the remaining stations</h3><p>Every other station on the tile is a guide. The default 4×4 tile makes twelve new holes in one setup. Lift the tool between passes, then seat the pins in four finished holes.</p></article>
+        <article class="case-card case-wide"><div class="number">04 / CUSTOMIZE</div><h3>Let the board pattern drive the model</h3><p>Set rows, columns, hole diameter, spacing, edge offset, and panel thickness. The tool preview updates with those values. The A1 mini bed sets the upper bound for tile rows and columns; larger pitch or wider bush bosses reduce the available guide count.</p>
+          <div class="formula"><div><strong>BOARD HOLE COUNT</strong><span>columns × rows</span></div><div><strong>NOMINAL BOARD WIDTH</strong><span>2 × edge offset + (columns − 1) × pitch</span></div><div><strong>GUIDES PER TILE</strong><span>tile columns × tile rows − 4 locating pins</span></div><div><strong>LEAPFROG STEP</strong><span>tile stations − 2, in each direction</span></div></div>
+        </article>
+        <article class="case-card"><div class="number">05 / CUTTER PROFILE</div><h3>Start with a twist drill</h3><p>The first profile pairs a normal twist drill with a hardened metal guide bush whose inside diameter matches the bit. A wider cutter profile comes later with a pilot guide and a separate clearance opening.</p></article>
+      </div>
+      <div class="downloads" aria-label="Download CAD and generated models">
+        <a href="scad/params.scad" download>Shared CAD settings</a>
+        <a href="scad/corner_starter_plate.scad" download>Corner starter plate CAD</a>
+        <a href="scad/corner_starter_fence.scad" download>Corner fence CAD</a>
+        <a href="scad/indexing_tile.scad" download>Indexing body CAD</a>
+        <a href="scad/indexing_pin_set.scad" download>Four-pin set CAD</a>
+        <a href="stl/corner_starter_plate.stl" download>Starter plate STL</a>
+        <a href="stl/corner_starter_fence.stl" download>Starter fence STL</a>
+        <a href="stl/indexing_tile.stl" download>Indexing tile STL</a>
+        <a href="stl/indexing_pin_set.stl" download>Pin set STL</a>
+        <a href="README.md">Full build notes</a>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <div class="eyebrow">BUILD NOTES / DESIGN BOUNDARIES</div><h2>What the first v3 case study assumes</h2>
+      <div class="doc-columns">
+        <div><h3>Starting pattern</h3><p>The opening values are 10 mm holes, 50 mm pitch, 25 mm edge offset, and 18 mm board thickness. The 25 mm edge offset was an assumption in the previous design; confirm it against the panel before drilling. Change all values in the configurator to compare alternate patterns.</p><h3>Printed and purchased parts</h3><ul><li>Corner starter plate and separate L fence, glued square after a dry fit.</li><li>Indexing tile body and four removable printed locating pins.</li><li>Metal guide bushes matched to the selected twist bit, plus clamps and a sacrificial backer.</li></ul></div>
+        <div><h3>Fit and print limits</h3><p>The A1 mini build area is 180 × 180 mm. At the default pitch and bush size, a 4×4 tile measures 170 × 170 mm and leaves 5 mm to each bed edge. The configurator reports the largest square layout that fits and rejects station spacing that would collide with the guide bosses.</p><h3>Accuracy still to establish</h3><p>Printed bush seats, removable pin sockets, fence tabs, and repeated indexing need physical fit checks. The model communicates nominal geometry and workflow; a fit coupon and scrap-board run establish the final clearances for the actual printer, filament, bush, bit, and panel.</p></div>
+      </div>
+      <div class="callout">This release models the regular twist-drill setup. Forstner bits and hole saws have cutting heads much wider than their pilots, so their next configuration needs its own guide-and-clearance geometry rather than a simple larger hole value.</div>
+    </section>
+  </main>
+  <footer><span>FORM / FIELD — PEGBOARD JIG V3</span><span>OPENSCAD PARAMS · A1 MINI · TWIST-DRILL PROFILE</span></footer>
+
+  <script>
+    window.addEventListener('error', event => {
+      if (event.target?.tagName === 'SCRIPT' || event.message) {
+        const loading = document.getElementById('loading');
+        if (loading) loading.textContent = 'The 3D viewer could not load. Serve this folder over HTTP and check the network connection for the Three.js module.';
+      }
+    }, true);
+    window.addEventListener('unhandledrejection', event => {
+      const loading = document.getElementById('loading');
+      if (loading) loading.textContent = 'The 3D viewer failed to start: ' + event.reason;
+    });
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const $ = id => document.getElementById(id);
+    const DEFAULTS = {boardCols:10, boardRows:10, holeD:10, pitch:50, edgeOffset:25, panelT:18, tileCols:4, tileRows:4, bushOd:12, bushId:10, seatD:11.9, bushSeatH:8, pinClearance:.2, pinMountClearance:.25};
+    const BUILD = {x:180, y:180, clearance:4};
+    const BASE = {baseT:6, bossH:8, wall:4, bitClearance:.4, pinLen:10, pinHeadH:1.6};
+    let settings = {...DEFAULTS}, derived = null, steps = [], stepIndex = 0, playing = false, playTimer = null, viewMode = 'iso';
+    const key = (c,r) => `${c},${r}`;
+    const fromKey = k => k.split(',').map(Number);
+    const pointIndex = (c,r,s) => r*s.boardCols+c;
+
+    const viewer = $('viewer');
+    const scene = new THREE.Scene(); scene.background = new THREE.Color('#e9ece4');
+    const camera = new THREE.PerspectiveCamera(36, 1, 1, 15000);
+    const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.domElement.setAttribute('aria-label','Interactive 3D view of the configurable pegboard jig');
+    viewer.prepend(renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI; controls.minDistance = 100; controls.maxDistance = 12000;
+    scene.add(new THREE.HemisphereLight(0xffffff,0x9aab8b,2.2));
+    const sun = new THREE.DirectionalLight(0xffffff,2.8); sun.position.set(-180,600,150); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-1800,right:1800,top:1800,bottom:-1800,near:1,far:5000}); sun.shadow.bias=-.001; sun.shadow.normalBias=.5; scene.add(sun);
+    const fill = new THREE.DirectionalLight(0xe9f0ff,1.3); fill.position.set(500,250,-400); scene.add(fill);
+
+    const MAT = {
+      jig:new THREE.MeshStandardMaterial({color:'#42614a',roughness:.62}),
+      jigLight:new THREE.MeshStandardMaterial({color:'#799466',roughness:.68}),
+      wood:new THREE.MeshStandardMaterial({color:'#d1b990',roughness:.88}),
+      woodEdge:new THREE.MeshStandardMaterial({color:'#b49972',roughness:.9}),
+      bush:new THREE.MeshStandardMaterial({color:'#c4cecb',metalness:.72,roughness:.3}),
+      pin:new THREE.MeshStandardMaterial({color:'#397d89',metalness:.2,roughness:.48}),
+      active:new THREE.MeshStandardMaterial({color:'#d58145',roughness:.5}),
+      drilled:new THREE.MeshStandardMaterial({color:'#86977b',roughness:.75}),
+      uncut:new THREE.MeshStandardMaterial({color:'#59615a',roughness:.85}),
+      hole:new THREE.MeshStandardMaterial({color:'#514435',roughness:.95}),
+      clamp:new THREE.MeshStandardMaterial({color:'#7f8987',metalness:.6,roughness:.35}),
+      ground:new THREE.MeshStandardMaterial({color:'#e4e8dc',roughness:1})
+    };
+    const world = new THREE.Group(); scene.add(world);
+    const boardGroup = new THREE.Group(), toolGroup = new THREE.Group(), markGroup = new THREE.Group(); world.add(boardGroup,toolGroup,markGroup);
+    let holeInstances = null, holeIndexMap = new Map();
+
+    function addBox(parent,w,h,d,material,x=0,y=0,z=0){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+    function addCylinder(parent,d,h,material,x=0,y=0,z=0,segments=32){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(d/2,d/2,h,segments),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+    function ringGeometry(outerD,innerD,height){const shape=new THREE.Shape();shape.absarc(0,0,outerD/2,0,Math.PI*2,false);const hole=new THREE.Path();hole.absarc(0,0,innerD/2,0,Math.PI*2,true);shape.holes.push(hole);const geometry=new THREE.ExtrudeGeometry(shape,{depth:height,bevelEnabled:false,curveSegments:32});geometry.rotateX(-Math.PI/2);return geometry;}
+    function addRing(parent,x,y,z,outerD,innerD,height,material){const mesh=new THREE.Mesh(ringGeometry(outerD,innerD,height),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+    function clearGroup(group){const geometries=new Set();group.traverse(o=>{if(o.geometry)geometries.add(o.geometry);});group.clear();geometries.forEach(g=>g.dispose());}
+    function addOutline(parent,w,d,y){const points=[new THREE.Vector3(0,y,0),new THREE.Vector3(w,y,0),new THREE.Vector3(w,y,d),new THREE.Vector3(0,y,d),new THREE.Vector3(0,y,0)];const geom=new THREE.BufferGeometry().setFromPoints(points);const line=new THREE.Line(geom,new THREE.LineBasicMaterial({color:0x9d8d72}));parent.add(line);}
+
+    function readSettings(){const form=$('settings-form');const s={};for(const [keyName,defaultValue] of Object.entries(DEFAULTS)){const field=form.elements.namedItem(keyName);s[keyName]=field.value===''?NaN:Number(field.value);if(!Number.isFinite(s[keyName]))return {error:`Enter a valid value for ${field.labels?.[0]?.textContent||keyName}.`};}return {settings:s};}
+    function derive(s,clampTile=true){
+      const numeric=Object.values(s).every(Number.isFinite);if(!numeric)return {error:'Complete every setting with a valid number.'};
+      if(s.boardCols<2||s.boardCols>100||s.boardRows<2||s.boardRows>100)return {error:'Board rows and columns must be between 2 and 100.'};
+      if(!Number.isInteger(s.boardCols)||!Number.isInteger(s.boardRows)||!Number.isInteger(s.tileCols)||!Number.isInteger(s.tileRows))return {error:'Board and tile station counts must be whole numbers.'};
+      if(s.holeD<3||s.holeD>30||s.pitch<15||s.pitch>120||s.edgeOffset<5||s.edgeOffset>100||s.panelT<3||s.panelT>50)return {error:'Use a 3–30 mm hole, 15–120 mm pitch, 5–100 mm edge offset, and 3–50 mm board thickness.'};
+      if(s.bushOd<6||s.bushId<3||s.seatD<=s.bushId||s.seatD>=s.bushOd+.6)return {error:'Bush dimensions do not form a press-fit guide. Check outside diameter, inside diameter, and printed seat.'};
+      if(s.bushSeatH<2||s.bushSeatH>BASE.bossH)return {error:`Bush seat depth must be between 2 and ${BASE.bossH} mm.`};
+      if(s.bushId<s.holeD)return {error:'The bush inside diameter must fit the selected twist drill.'};
+      if(s.pinClearance<0||s.pinClearance>1.5||s.holeD-s.pinClearance<3)return {error:'Pin clearance leaves too little material for the locating pins.'};
+      if(s.pinMountClearance<0||s.pinMountClearance>1)return {error:'Pin socket clearance must be between 0 and 1 mm.'};
+      const bossD=Math.max(s.bushOd,s.seatD,s.holeD+BASE.bitClearance)+2*BASE.wall;
+      if(s.pitch<bossD+2)return {error:`${s.pitch} mm spacing is too tight for ${bossD.toFixed(1)} mm guide bosses.`};
+      if(s.edgeOffset<bossD/2+3)return {error:`The first hole needs at least ${(bossD/2+3).toFixed(1)} mm edge offset for the starter guide.`};
+      const maxCols=Math.floor((BUILD.x-2*BUILD.clearance-bossD)/s.pitch)+1;
+      const maxRows=Math.floor((BUILD.y-2*BUILD.clearance-bossD)/s.pitch)+1;
+      if(maxCols<3||maxRows<3)return {error:'The selected pitch and guide size leave no 3×3 indexing tile on the A1 mini.'};
+      let tileCols=s.tileCols,tileRows=s.tileRows,adjusted=false;
+      if(clampTile){if(tileCols>maxCols){tileCols=maxCols;adjusted=true;}if(tileRows>maxRows){tileRows=maxRows;adjusted=true;}}
+      if(tileCols<3||tileRows<3||tileCols>maxCols||tileRows>maxRows)return {error:`Tile must be between 3×3 and ${maxCols}×${maxRows} for the current settings.`};
+      const tileW=(tileCols-1)*s.pitch+bossD,tileH=(tileRows-1)*s.pitch+bossD;
+      const starterReach=s.edgeOffset+s.pitch+25+15;
+      if(starterReach>BUILD.x||starterReach>BUILD.y)return {error:'The corner starter exceeds the A1 mini build area. Reduce pitch or edge offset.'};
+      return {settings:{...s,tileCols,tileRows},derived:{bossD,maxCols,maxRows,tileW,tileH,starterReach,guideCount:tileCols*tileRows-4,total:s.boardCols*s.boardRows,boardW:2*s.edgeOffset+(s.boardCols-1)*s.pitch,boardH:2*s.edgeOffset+(s.boardRows-1)*s.pitch,stepX:tileCols-2,stepY:tileRows-2},adjusted};
+    }
+    function writeSettingsToForm(s){for(const [name,value] of Object.entries(s)){const field=$('settings-form').elements.namedItem(name);if(field)field.value=String(value);}}
+    function setFitMessage(text,kind=''){const box=$('fit-status');box.className='fit-status'+(kind?' '+kind:'');box.textContent=text;}
+    function updateDerivedUI(){
+      $('total-holes').textContent=derived.total.toLocaleString();$('guide-count').textContent=derived.guideCount.toLocaleString();$('board-size').textContent=`${derived.boardW.toFixed(0)} × ${derived.boardH.toFixed(0)}`;$('tile-size').textContent=`${derived.tileW.toFixed(0)} × ${derived.tileH.toFixed(0)}`;
+      $('max-layout').textContent=`MAX ${derived.maxCols} × ${derived.maxRows}`;
+      $('tile-cols').max=String(derived.maxCols);$('tile-rows').max=String(derived.maxRows);
+      const minEdge=Math.min((BUILD.x-derived.tileW)/2,(BUILD.y-derived.tileH)/2);
+      setFitMessage(`${settings.tileCols}×${settings.tileRows}: ${derived.guideCount} guides · ${derived.tileW.toFixed(0)}×${derived.tileH.toFixed(0)} mm · ${minEdge.toFixed(1)} mm bed margin${minEdge<4.5?' — brim will not fit':''}`,minEdge<4.5?'warn':'');
+      $('scene-dimension').innerHTML=`Ø${settings.holeD} mm holes<br>${settings.pitch} mm pitch · ${settings.panelT} mm panel`;
+    }
+
+    function buildSteps(s,d){
+      const seed=[[0,0],[1,0],[0,1],[1,1]];const known=new Set(seed.map(p=>key(p[0],p[1])));const plan=[];
+      plan.push({kind:'starter',phase:'Corner setup',title:'01 / CORNER STARTER',subtitle:'REGISTER TWO PANEL EDGES',origin:[0,0],pins:[],guides:seed,active:seed,text:'Seat the starter fence against the two panel edges. Clamp it square; the four guides set the first 2×2 seed.'});
+      plan.push({kind:'starter',phase:'Drill the seed',title:'02 / DRILL THE SEED',subtitle:'FOUR MATCHING REFERENCE HOLES',origin:[0,0],pins:[],guides:seed,active:seed,text:'Drill the four seed holes through their metal bushes. These four holes become the indexing tile’s locating pattern.'});
+      const localGuides=[];for(let r=0;r<s.tileRows;r++)for(let c=0;c<s.tileCols;c++)if(!(c<2&&r<2))localGuides.push([c,r]);
+      const origins=[];for(let r=0;r<s.boardRows-1;r+=d.stepY)for(let c=0;c<s.boardCols-1;c+=d.stepX)origins.push([c,r]);
+      let pass=0;
+      for(const [originC,originR] of origins){
+        const pins=seed.map(([c,r])=>[originC+c,originR+r]);
+        if(pins.some(([c,r])=>c>=s.boardCols||r>=s.boardRows||!known.has(key(c,r))))continue;
+        const guides=localGuides.map(([c,r])=>[originC+c,originR+r]);
+        const active=guides.filter(([c,r])=>c<s.boardCols&&r<s.boardRows&&!known.has(key(c,r)));
+        if(!active.length)continue;
+        pass++;
+        const first=pass===1;
+        let moveText;
+        if(first)moveText='Remove the starter. Fit the four pins and seat them in the seed holes. Clamp the tile, then drill the highlighted guides.';
+        else moveText=`Lift and move to tile origin column ${originC+1}, row ${originR+1}. Seat all four pins in finished holes, clamp the body, and drill ${active.length} new position${active.length===1?'':'s'}.`;
+        plan.push({kind:'tile',phase:first?'First indexing pass':`Index pass ${pass}`,title:`${String(pass+2).padStart(2,'0')} / INDEX TILE`,subtitle:`${s.tileCols}×${s.tileRows} FIELD · ${active.length} NEW HOLES`,origin:[originC,originR],pins,guides,active,text:moveText,pass});
+        active.forEach(([c,r])=>known.add(key(c,r)));
+      }
+      const complete=known.size===d.total;
+      plan.push({kind:'complete',phase:'Case study complete',title:`${String(plan.length+1).padStart(2,'0')} / GRID COMPLETE`,subtitle:`${known.size} OF ${d.total} HOLES PLACED`,origin:[0,0],pins:[],guides:[],active:[],text:complete?`The plan reaches all ${d.total} board holes using one 2×2 seed and ${pass} indexing placements.`:`The current pattern reaches ${known.size} of ${d.total} holes. Review the tile step and board dimensions before exporting a drilling plan.`,pass,complete});
+      return plan;
+    }
+
+    function buildBoard(s,d){
+      clearGroup(boardGroup);holeIndexMap.clear();
+      const board=new THREE.Mesh(new THREE.BoxGeometry(d.boardW,s.panelT,d.boardH),MAT.wood);board.position.set(d.boardW/2,-s.panelT/2,d.boardH/2);board.receiveShadow=true;board.castShadow=true;boardGroup.add(board);addOutline(boardGroup,d.boardW,d.boardH,.08);
+      const geometry=new THREE.CylinderGeometry(s.holeD/2,s.holeD/2,.18,16);const material=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9});const count=s.boardCols*s.boardRows;holeInstances=new THREE.InstancedMesh(geometry,material,count);holeInstances.instanceMatrix.setUsage(THREE.DynamicDrawUsage);holeInstances.frustumCulled=false;
+      const dummy=new THREE.Object3D();let i=0;
+      for(let r=0;r<s.boardRows;r++)for(let c=0;c<s.boardCols;c++){const x=s.edgeOffset+c*s.pitch,z=s.edgeOffset+r*s.pitch;dummy.position.set(x,.08,z);dummy.updateMatrix();holeInstances.setMatrixAt(i,dummy.matrix);holeIndexMap.set(key(c,r),i);holeInstances.setColorAt(i,new THREE.Color('#514435'));i++;}
+      boardGroup.add(holeInstances);
+      const backing=new THREE.Mesh(new THREE.BoxGeometry(d.boardW+20,5,d.boardH+20),MAT.woodEdge);backing.position.set(d.boardW/2,-s.panelT-2.5,d.boardH/2);backing.receiveShadow=true;boardGroup.add(backing);
+    }
+
+    function drawStarter(step,s,d){
+      const group=new THREE.Group();toolGroup.add(group);const reach=d.starterReach;
+      addBox(group,reach,6,reach,MAT.jig,reach/2,3,reach/2);
+      for(const [c,r] of step.guides){const x=s.edgeOffset+c*s.pitch,z=s.edgeOffset+r*s.pitch;const act=step.active.some(p=>p[0]===c&&p[1]===r);addRing(group,x,6,z,d.bossD,s.bushOd,BASE.bossH,act?MAT.active:MAT.jigLight);addRing(group,x,6+BASE.bossH-s.bushSeatH,z,s.bushOd,s.bushId,s.bushSeatH+.15,MAT.bush);}
+      // Clamp openings in the plate
+      const clampX=s.edgeOffset+s.pitch+25,clampZ=s.edgeOffset;
+      for(const [x,z] of [[clampX,clampZ],[clampZ,clampX]])addCylinder(group,6,6.2,MAT.uncut,x,3,z,24);
+      const wallH=s.panelT+8,wallY=(8-s.panelT)/2;
+      addBox(group,4,wallH,reach+4,MAT.jigLight,-2,wallY,(reach-4)/2);
+      addBox(group,reach+4,wallH,4,MAT.jigLight,(reach-4)/2,wallY,-2);
+      for(const f of [.28,.72]){const t=f*reach;addBox(group,5.5,4.4,8,MAT.jigLight,2.74,3,t);addBox(group,8,4.4,5.5,MAT.jigLight,t,3,2.74);}
+      return group;
+    }
+
+    function drawIndex(step,s,d){
+      const group=new THREE.Group();toolGroup.add(group);const startX=s.edgeOffset+step.origin[0]*s.pitch,startZ=s.edgeOffset+step.origin[1]*s.pitch;
+      const x0=startX-d.bossD/2,z0=startZ-d.bossD/2,x1=startX+(s.tileCols-1)*s.pitch+d.bossD/2,z1=startZ+(s.tileRows-1)*s.pitch+d.bossD/2;
+      const width=x1-x0,depth=z1-z0;
+      addBox(group,width,BASE.baseT,8,MAT.jig,x0+width/2,BASE.baseT/2,z0+4);addBox(group,width,BASE.baseT,8,MAT.jig,x0+width/2,BASE.baseT/2,z1-4);
+      addBox(group,8,BASE.baseT,depth,MAT.jig,x0+4,BASE.baseT/2,z0+depth/2);addBox(group,8,BASE.baseT,depth,MAT.jig,x1-4,BASE.baseT/2,z0+depth/2);
+      for(let c=0;c<s.tileCols;c++)addBox(group,8,BASE.baseT,depth,MAT.jig,x0+d.bossD/2+c*s.pitch,BASE.baseT/2,z0+depth/2);
+      for(let r=0;r<s.tileRows;r++)addBox(group,width,BASE.baseT,8,MAT.jig,x0+width/2,BASE.baseT/2,z0+d.bossD/2+r*s.pitch);
+      const activeKeys=new Set(step.active.map(([c,r])=>key(c,r)));
+      for(let r=0;r<s.tileRows;r++)for(let c=0;c<s.tileCols;c++){
+        if(c<2&&r<2)continue;const x=startX+c*s.pitch,z=startZ+r*s.pitch,active=activeKeys.has(key(step.origin[0]+c,step.origin[1]+r));
+        addRing(group,x,BASE.baseT,z,d.bossD,s.bushOd,BASE.bossH,active?MAT.active:MAT.jigLight);
+        addRing(group,x,BASE.baseT+BASE.bossH-s.bushSeatH,z,s.bushOd,s.bushId,s.bushSeatH+.15,MAT.bush);
+      }
+      for(let r=0;r<2;r++)for(let c=0;c<2;c++){
+        const x=startX+c*s.pitch,z=startZ+r*s.pitch;
+        addCylinder(group,18,1.6,MAT.jigLight,x,BASE.baseT+.8,z,32);
+        addCylinder(group,14,1.62,MAT.pin,x,BASE.baseT+.8,z,32);
+        addCylinder(group,s.holeD-s.pinClearance,BASE.pinLen,MAT.pin,x,-BASE.pinLen/2,z,28);
+      }
+      return group;
+    }
+
+    function knownBefore(index,s){
+      const known=new Set();if(index>=2)for(const [c,r] of [[0,0],[1,0],[0,1],[1,1]])known.add(key(c,r));
+      for(let i=2;i<index;i++){const prior=steps[i];if(prior.kind==='tile')prior.active.forEach(([c,r])=>known.add(key(c,r)));}
+      return known;
+    }
+    function updateHoleColors(step,s){
+      if(!holeInstances)return;
+      const known=knownBefore(stepIndex,s);
+      if(step.kind==='complete'){
+        known.clear();for(let r=0;r<s.boardRows;r++)for(let c=0;c<s.boardCols;c++)known.add(key(c,r));
+      }
+      const active=new Set(step.active.map(([c,r])=>key(c,r)));
+      const blue=new Set(step.pins.map(([c,r])=>key(c,r)));
+      for(let r=0;r<s.boardRows;r++)for(let c=0;c<s.boardCols;c++){
+        const k=key(c,r),idx=holeIndexMap.get(k);let color=MAT.uncut.color;
+        if(known.has(k))color=MAT.drilled.color;
+        if(active.has(k))color=MAT.active.color;
+        if(blue.has(k))color=MAT.pin.color;
+        holeInstances.setColorAt(idx,color);
+      }
+      holeInstances.instanceColor.needsUpdate=true;
+    }
+
+    function renderStep(index,refocus=true){
+      if(!steps.length)return;stepIndex=Math.max(0,Math.min(index,steps.length-1));const step=steps[stepIndex];clearGroup(toolGroup);clearGroup(markGroup);
+      if(step.kind==='starter'||step.kind==='seed')drawStarter(step,settings,derived);else if(step.kind==='tile')drawIndex(step,settings,derived);else if(step.kind==='complete')drawIndex({...step,origin:[0,0],active:[],pins:[]},settings,derived);
+      updateHoleColors(step,settings);
+      $('phase').textContent=`STEP ${stepIndex+1} / ${step.phase.toUpperCase()}`;$('progress-label').textContent=`${stepIndex+1} OF ${steps.length}`;$('step-text').textContent=step.text;
+      $('progress').max=String(steps.length-1);$('progress').value=String(stepIndex);$('step-select').value=String(stepIndex);
+      $('scene-title').textContent=step.title;$('scene-subtitle').textContent=step.subtitle;
+      const known=step.kind==='complete'?derived.total:knownBefore(stepIndex,settings).size;
+      $('case-hole-count').textContent=`${known} / ${derived.total} drilled`;
+      const passes=steps.slice(0,stepIndex+1).filter(x=>x.kind==='tile').length;$('case-pass-count').textContent=`${passes} indexing pass${passes===1?'':'es'}`;
+      $('case-step-location').textContent=step.kind==='tile'?`TILE ORIGIN C${step.origin[0]+1} / R${step.origin[1]+1}`:step.kind==='complete'?'FULL BOARD':'STARTER AT CORNER';
+      if(refocus)setView(viewMode);
+    }
+
+    function setView(mode){viewMode=mode;const s=steps[stepIndex],d=derived;let target=new THREE.Vector3(d.boardW/2,-settings.panelT/2,d.boardH/2);let distance=Math.max(d.boardW,d.boardH)*1.7+140;
+      if(mode==='starter'){target.set(d.starterReach/2,0,d.starterReach/2);distance=d.starterReach*3.1+90;}
+      if(mode==='tile'&&s.kind==='tile'){target.set(settings.edgeOffset+s.origin[0]*settings.pitch+(settings.tileCols-1)*settings.pitch/2,0,settings.edgeOffset+s.origin[1]*settings.pitch+(settings.tileRows-1)*settings.pitch/2);distance=Math.max(derived.tileW,derived.tileH)*2.5+100;}
+      controls.target.copy(target);camera.up.set(0,1,0);
+      if(mode==='top'){camera.position.set(target.x,target.y+distance,target.z+.01);camera.up.set(0,0,-1);}
+      else{camera.position.set(target.x+distance*.78,target.y+distance*.7,target.z+distance*.9);}
+      controls.update();document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===mode)));
+    }
+
+    function refreshAll({preserveStep=false,adjusted=false}={}){
+      const read=readSettings();if(read.error){setFitMessage(read.error,'error');return false;}
+      const result=derive(read.settings,true);if(result.error){setFitMessage(result.error,'error');return false;}
+      settings=result.settings;derived=result.derived;writeSettingsToForm(settings);updateDerivedUI();
+      steps=buildSteps(settings,derived);const requested=preserveStep?stepIndex:0;stepIndex=Math.min(requested,steps.length-1);
+      const options=steps.map((step,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=`${i+1}. ${step.phase} — ${step.text}`;return option;});$('step-select').replaceChildren(...options);
+      buildBoard(settings,derived);renderStep(stepIndex,false);setView(viewMode);
+      const plannerComplete=steps[steps.length-1].complete;
+      if(adjusted||result.adjusted)setFitMessage(`${settings.tileCols}×${settings.tileRows}: ${derived.guideCount} guides. Tile station count adjusted to fit the A1 mini.`, 'warn');
+      if(!plannerComplete)setFitMessage('Some board holes are unreachable with this tile step. Try a larger tile or check rows, columns, and pitch.','error');
+      return true;
+    }
+
+    function stopPlaying(){playing=false;if(playTimer){clearInterval(playTimer);playTimer=null;}$('play').textContent='▶';$('play').setAttribute('aria-label','Play case study');}
+    function startPlaying(){if(stepIndex>=steps.length-1)renderStep(0);playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause case study');playTimer=setInterval(()=>{if(stepIndex>=steps.length-1){stopPlaying();return;}renderStep(stepIndex+1);},1800);}
+    function exportSettings(){const exportData={schema:'pegboard-jig-v3-settings',cutter:'twist-drill',...settings,buildArea:BUILD,derived:{totalBoardHoles:derived.total,nominalBoardWidthMm:derived.boardW,nominalBoardHeightMm:derived.boardH,indexingGuidesPerPass:derived.guideCount,indexingTileWidthMm:derived.tileW,indexingTileHeightMm:derived.tileH,maxTileCols:derived.maxCols,maxTileRows:derived.maxRows,passes:steps.filter(s=>s.kind==='tile').length}};const blob=new Blob([JSON.stringify(exportData,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='pegboard-jig-v3-settings.json';a.click();URL.revokeObjectURL(url);}
+
+    $('settings-form').addEventListener('input',()=>refreshAll({preserveStep:true}));
+    $('settings-form').addEventListener('submit',event=>{event.preventDefault();refreshAll({preserveStep:true});});
+    $('reset-settings').addEventListener('click',()=>{stopPlaying();writeSettingsToForm(DEFAULTS);viewMode='iso';refreshAll();});
+    $('download-settings').addEventListener('click',exportSettings);
+    $('prev').addEventListener('click',()=>{stopPlaying();renderStep(stepIndex-1);});
+    $('next').addEventListener('click',()=>{stopPlaying();renderStep(stepIndex+1);});
+    $('restart').addEventListener('click',()=>{stopPlaying();renderStep(0);});
+    $('play').addEventListener('click',()=>playing?stopPlaying():startPlaying());
+    $('progress').addEventListener('input',e=>{stopPlaying();renderStep(Number(e.target.value));});
+    $('step-select').addEventListener('change',e=>{stopPlaying();renderStep(Number(e.target.value));});
+    document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+
+    const observer=new ResizeObserver(()=>{const w=viewer.clientWidth,h=viewer.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);});observer.observe(viewer);
+    function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);} 
+    try{writeSettingsToForm(DEFAULTS);refreshAll();$('loading').classList.add('hidden');animate();}
+    catch(error){$('loading').textContent='Could not build the 3D model: '+error.message;console.error(error);}
+
+    /* ==================== PARTS BREAKDOWN ==================== */
+    // Printed-part constants mirrored from scad/params.scad (mm).
+    const PP={ribW:8,borderW:8,fenceT:4,fenceTop:8,clampHoleD:6,clampGap:25,
+      notchW:10,notchD:6,tabW:8,tabT:4.4,tabZ:0.8,tabD:5.5,tabFrac:[0.28,0.72],
+      pinHeadD:14,pinHeadH:1.6,pinLen:10,pinChamferH:1.2,pinChamferRadial:0.6,
+      pinPadD:18,pinSetSpacing:18,pinHeadRecessClearance:0.3};
+    const r1=v=>String(Math.round(v*10)/10);
+
+    // Shape-space helper: logical (x,z) on the panel maps to world (x, up, z).
+    // ExtrudeGeometry runs along +z; rotateX(-90°) makes that +y, and a shape
+    // point (sx,-sz) lands at world z=+sz.
+    function starterPlateGeo(reach){
+      const nd=PP.notchD,nw=PP.notchW,h=nw/2,c1=reach*PP.tabFrac[0],c2=reach*PP.tabFrac[1];
+      const s=new THREE.Shape();const L=(x,z)=>s.lineTo(x,-z);
+      s.moveTo(0,0);
+      // Edge y=0 (notches cut toward +z)
+      L(c1-h,0);L(c1-h,nd);L(c1+h,nd);L(c1+h,0);
+      L(c2-h,0);L(c2-h,nd);L(c2+h,nd);L(c2+h,0);
+      L(reach,0);L(reach,reach);L(0,reach);
+      // Edge x=0 walking -z (notches cut toward +x)
+      L(nd,c2+h);L(0,c2+h);L(0,c2-h);L(nd,c2-h);
+      L(nd,c1+h);L(0,c1+h);L(0,c1-h);L(nd,c1-h);
+      L(0,0);s.closePath();
+      const g=new THREE.ExtrudeGeometry(s,{depth:BASE.baseT,bevelEnabled:false,curveSegments:16});
+      g.rotateX(-Math.PI/2);return g;
+    }
+
+    function addBossAt(g,x,z,s,d){
+      addRing(g,x,BASE.baseT,z,d.bossD,s.bushOd,BASE.bossH,MAT.jigLight);
+      addRing(g,x,BASE.baseT+BASE.bossH-s.bushSeatH,z,s.bushOd,s.bushId,s.bushSeatH+0.15,MAT.bush);
+      const bitD=s.holeD+BASE.bitClearance;
+      addCylinder(g,bitD,BASE.baseT,MAT.hole,x,BASE.baseT/2,z,24);
+      addCylinder(g,Math.max(s.bushId-0.2,bitD-1),BASE.bossH,MAT.hole,x,BASE.baseT+BASE.bossH/2,z,24);
+    }
+
+    function addPinPadAt(g,x,z,s){
+      const pinD=s.holeD-s.pinClearance,pinMountD=pinD+s.pinMountClearance;
+      const recessD=PP.pinHeadD+PP.pinHeadRecessClearance;
+      addCylinder(g,PP.pinPadD,PP.pinHeadH,MAT.jig,x,BASE.baseT+PP.pinHeadH/2,z,28);
+      addCylinder(g,recessD,PP.pinHeadH+0.15,MAT.hole,x,BASE.baseT+PP.pinHeadH/2+0.05,z,28);
+      addCylinder(g,pinMountD,BASE.baseT+0.2,MAT.hole,x,(BASE.baseT+0.2)/2,z,24);
+    }
+
+    function buildStarterPlate(s,d){
+      const g=new THREE.Group(),reach=d.starterReach;
+      const plate=new THREE.Mesh(starterPlateGeo(reach),MAT.jig);
+      plate.castShadow=plate.receiveShadow=true;g.add(plate);
+      const xs=[s.edgeOffset,s.edgeOffset+s.pitch],zs=[s.edgeOffset,s.edgeOffset+s.pitch];
+      for(const x of xs)for(const z of zs)addBossAt(g,x,z,s,d);
+      const cx=s.edgeOffset+s.pitch+PP.clampGap;
+      addCylinder(g,PP.clampHoleD,BASE.baseT+0.2,MAT.hole,cx,(BASE.baseT+0.2)/2,s.edgeOffset,20);
+      addCylinder(g,PP.clampHoleD,BASE.baseT+0.2,MAT.hole,s.edgeOffset,(BASE.baseT+0.2)/2,cx,20);
+      return g;
+    }
+
+    function buildFence(s,d){
+      const g=new THREE.Group(),reach=d.starterReach;
+      const h=s.panelT+PP.fenceTop,yc=(PP.fenceTop-s.panelT)/2,w=reach+PP.fenceT,zc=(reach-PP.fenceT)/2;
+      addBox(g,PP.fenceT,h,w,MAT.jigLight,-PP.fenceT/2,yc,zc);
+      addBox(g,w,h,PP.fenceT,MAT.jigLight,zc,yc,-PP.fenceT/2);
+      for(const f of PP.tabFrac){
+        const c=f*reach;
+        addBox(g,PP.tabD+0.01,PP.tabT,PP.tabW,MAT.jigLight,PP.tabD/2,PP.tabZ+PP.tabT/2,c);
+        addBox(g,PP.tabW,PP.tabT,PP.tabD+0.01,MAT.jigLight,c,PP.tabZ+PP.tabT/2,PP.tabD/2);
+      }
+      return g;
+    }
+
+    function buildTileBody(s,d){
+      const g=new THREE.Group(),p=s.pitch,bossD=d.bossD;
+      const x0=-bossD/2,z0=-bossD/2,x1=(s.tileCols-1)*p+bossD/2,z1=(s.tileRows-1)*p+bossD/2;
+      const W=x1-x0,H=z1-z0,cx=(x0+x1)/2,cz=(z0+z1)/2,bw=PP.borderW,rw=PP.ribW;
+      // Perimeter rails
+      addBox(g,W,BASE.baseT,bw,MAT.jig,cx,BASE.baseT/2,z0+bw/2);
+      addBox(g,W,BASE.baseT,bw,MAT.jig,cx,BASE.baseT/2,z1-bw/2);
+      addBox(g,bw,BASE.baseT,H,MAT.jig,x0+bw/2,BASE.baseT/2,cz);
+      addBox(g,bw,BASE.baseT,H,MAT.jig,x1-bw/2,BASE.baseT/2,cz);
+      // Ribs through every station line
+      for(let i=0;i<s.tileCols;i++)addBox(g,rw,BASE.baseT,H,MAT.jig,i*p,BASE.baseT/2,cz);
+      for(let j=0;j<s.tileRows;j++)addBox(g,W,BASE.baseT,rw,MAT.jig,cx,BASE.baseT/2,j*p);
+      // Pin pads at the 2x2 seed stations, guide bosses everywhere else
+      const pins=new Set(['0,0',p+',0','0,'+p,p+','+p]);
+      for(let r=0;r<s.tileRows;r++)for(let c=0;c<s.tileCols;c++){
+        const x=c*p,z=r*p;
+        if(pins.has(x+','+z))addPinPadAt(g,x,z,s);else addBossAt(g,x,z,s,d);
+      }
+      return g;
+    }
+
+    function pinMesh(s,installed){
+      const g=new THREE.Group(),pinD=s.holeD-s.pinClearance;
+      const tipR=(pinD-2*PP.pinChamferRadial)/2;
+      if(installed){
+        // Flipped for use: chamfered tip down, head seated in the top recess.
+        const stemBot=PP.pinChamferH-PP.pinLen,stemTop=BASE.baseT;
+        addCylinder(g,pinD,stemTop-stemBot,MAT.pin,0,(stemTop+stemBot)/2,0,24);
+        const ch=new THREE.Mesh(new THREE.CylinderGeometry(pinD/2,tipR,PP.pinChamferH,24),MAT.pin);
+        ch.position.y=-PP.pinLen+PP.pinChamferH/2;ch.castShadow=ch.receiveShadow=true;g.add(ch);
+        addCylinder(g,PP.pinHeadD,PP.pinHeadH,MAT.pin,0,BASE.baseT+PP.pinHeadH/2,0,28);
+      }else{
+        // As printed: head on the bed, stem up, chamfer at the top.
+        addCylinder(g,PP.pinHeadD,PP.pinHeadH,MAT.pin,0,PP.pinHeadH/2,0,28);
+        const stemH=BASE.baseT+PP.pinLen-PP.pinChamferH;
+        addCylinder(g,pinD,stemH,MAT.pin,0,PP.pinHeadH+stemH/2,0,24);
+        const ch=new THREE.Mesh(new THREE.CylinderGeometry(tipR,pinD/2,PP.pinChamferH,24),MAT.pin);
+        ch.position.y=PP.pinHeadH+stemH+PP.pinChamferH/2;ch.castShadow=ch.receiveShadow=true;g.add(ch);
+      }
+      return g;
+    }
+
+    function buildPinSet(s){
+      const g=new THREE.Group();
+      for(let i=0;i<4;i++){const p=pinMesh(s,false);p.position.x=i*PP.pinSetSpacing;g.add(p);}
+      return g;
+    }
+
+    function buildStarterAsm(s,d){
+      const inner=new THREE.Group();
+      const plate=buildStarterPlate(s,d);plate.userData={tag:'plate',explode:new THREE.Vector3(0,0,0)};
+      const fence=buildFence(s,d);fence.userData={tag:'fence',explode:new THREE.Vector3(0,46,0)};
+      inner.add(plate,fence);centeredG(inner);return inner;
+    }
+
+    function buildTileAsm(s,d){
+      const inner=new THREE.Group();
+      const body=buildTileBody(s,d);body.userData={tag:'body',explode:new THREE.Vector3(0,0,0)};
+      const pins=new THREE.Group();pins.userData={tag:'pins',explode:new THREE.Vector3(0,34,0)};
+      for(const [x,z] of [[0,0],[s.pitch,0],[0,s.pitch],[s.pitch,s.pitch]]){
+        const p=pinMesh(s,true);p.position.set(x,0,z);pins.add(p);
+      }
+      inner.add(body,pins);centeredG(inner);return inner;
+    }
+
+    const STARTER_STEPS=[
+      {e:1,tags:['plate'],text:(s,d)=>`Print piece 1 of 2: the guide plate, flat with bosses up. The ${r1(d.starterReach)} mm square footprint leaves plenty of bed margin.`},
+      {e:1,tags:['fence'],text:(s,d)=>`Print piece 2 of 2: the L fence standing on its two long bottom edges (${r1(s.panelT+PP.fenceTop)} mm tall walls). Add a brim — it is tippy.`},
+      {e:0,tags:['plate','fence'],text:()=>`Dry-fit first: drop the four tabs into the pockets and check the fence sits square on both board edges before any glue.`},
+      {e:0,tags:['plate','fence'],text:()=>`Glue the tab joints, then clamp the assembly against square scrap while the glue sets.`},
+      {e:0,tags:['plate','fence'],text:()=>`Set the L against the board corner, clamp it, and drill the 2×2 seed through the bushes.`}
+    ];
+    const TILE_STEPS=[
+      {e:1,tags:['body'],text:(s,d)=>`Print piece 1 of 2: the indexing body flat, bosses up. The ribbed frame keeps the ${r1(d.tileW)} mm tile light on the bed.`},
+      {e:1,tags:['pins'],text:()=>`Print piece 2 of 2: the pin set with all four heads on the bed — one plate, four pins.`},
+      {e:0,tags:['body','pins'],text:()=>`Flip each pin and press it into a top socket, chamfered end down. Heads seat in the shallow recesses.`},
+      {e:0,tags:['body','pins'],text:(s,d)=>`Seat the four pins in the seed holes, clamp the open perimeter rails, and drill the ${d.guideCount} guide positions.`},
+      {e:0,tags:['body','pins'],text:(s,d)=>`Leapfrog: move the tile by ${s.tileCols-2} × ${s.tileRows-2} pitches so the pins land in finished holes.`}
+    ];
+
+    const PART_DEFS=[
+      {key:'plate',tab:'Starter plate',kind:'part',name:'CORNER STARTER — GUIDE PLATE',sub:'2×2 SEED · 4 BUSH SEATS',
+        dims:(s,d)=>`${r1(d.starterReach)} × ${r1(d.starterReach)} mm plan · ${BASE.baseT+BASE.bossH} mm tall`,
+        print:'PRINT FLAT · BOSSES UP',dimText:(s,d)=>`${r1(d.starterReach)}×${r1(d.starterReach)}×${BASE.baseT+BASE.bossH} mm`,
+        files:['corner_starter_plate.stl'],build:(s,d)=>buildStarterPlate(s,d)},
+      {key:'fence',tab:'Starter fence',kind:'part',name:'CORNER STARTER — L FENCE',sub:'EDGE REGISTER · TAB & POCKET JOINT',
+        dims:(s,d)=>`${r1(d.starterReach+PP.fenceT)} × ${r1(s.panelT+PP.fenceTop)} × ${r1(d.starterReach+PP.fenceT)} mm`,
+        print:'PRINT ON LONG EDGES · USE BRIM',dimText:(s,d)=>`${r1(d.starterReach+PP.fenceT)}×${r1(s.panelT+PP.fenceTop)}×${r1(d.starterReach+PP.fenceT)} mm`,
+        files:['corner_starter_fence.stl'],build:(s,d)=>buildFence(s,d)},
+      {key:'tile',tab:'Index tile',kind:'part',name:'INDEXING TILE — BODY',sub:null,
+        dims:(s,d)=>`${r1(d.tileW)} × ${r1(d.tileH)} mm footprint · ${BASE.baseT+BASE.bossH} mm tall · ${d.guideCount} guides`,
+        print:'PRINT FLAT · BOSSES UP · NO BRIM',dimText:(s,d)=>`${r1(d.tileW)}×${r1(d.tileH)}×${BASE.baseT+BASE.bossH} mm · ${d.guideCount} guides`,
+        files:['indexing_tile.stl'],build:(s,d)=>buildTileBody(s,d),
+        sub:(s,d)=>`RIBBED BODY · ${d.guideCount} GUIDES + 4 SOCKETS`},
+      {key:'pins',tab:'Pin set',kind:'part',name:'INDEXING PINS — SET OF 4',sub:'PRESS-FIT · CHAMFER DOWN IN USE',
+        dims:(s,d)=>`${3*PP.pinSetSpacing+PP.pinHeadD} × ${PP.pinHeadD} × ${r1(PP.pinHeadH+BASE.baseT+PP.pinLen)} mm`,
+        print:'PRINT HEADS ON BED',dimText:()=>'68×14×17.6 mm · 4 pins',
+        files:['indexing_pin_set.stl'],build:s=>buildPinSet(s)},
+      {key:'starter',tab:'Starter assembly',kind:'asm',name:'CORNER STARTER — ASSEMBLY',sub:'PLATE + FENCE · GLUE JOINT',
+        dims:()=>`2 printed parts · dry-fit then glue`,
+        print:'ASSEMBLE PER STEPS BELOW',dimText:()=>'2 parts · exploded view',
+        files:['corner_starter_plate.stl','corner_starter_fence.stl'],build:(s,d)=>buildStarterAsm(s,d),steps:STARTER_STEPS},
+      {key:'tileasm',tab:'Tile assembly',kind:'asm',name:'INDEXING TILE — ASSEMBLY',sub:'BODY + 4 PINS · PRESS FIT',
+        dims:(s,d)=>`2 printed parts · ${d.guideCount} drill guides`,
+        print:'ASSEMBLE PER STEPS BELOW',dimText:(s,d)=>`${r1(d.tileW)}×${r1(d.tileH)} tile + 4 pins`,
+        files:['indexing_tile.stl','indexing_pin_set.stl'],build:(s,d)=>buildTileAsm(s,d),steps:TILE_STEPS}
+    ];
+
+    // --- parts viewer scene ---
+    const partsViewer=$('parts-viewer');
+    const pScene=new THREE.Scene();pScene.background=new THREE.Color('#e9ece4');
+    const pCamera=new THREE.PerspectiveCamera(36,1,1,30000);
+    const pRenderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+    pRenderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    pRenderer.shadowMap.enabled=true;pRenderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    pRenderer.outputColorSpace=THREE.SRGBColorSpace;
+    partsViewer.prepend(pRenderer.domElement);
+    const pControls=new OrbitControls(pCamera,pRenderer.domElement);
+    pControls.enableDamping=true;pControls.maxPolarAngle=Math.PI;pControls.minDistance=50;pControls.maxDistance=24000;
+    pScene.add(new THREE.HemisphereLight(0xffffff,0x9aab8b,2.2));
+    const pSun=new THREE.DirectionalLight(0xffffff,2.8);pSun.position.set(-180,600,150);pSun.castShadow=true;pSun.shadow.mapSize.set(2048,2048);Object.assign(pSun.shadow.camera,{left:-2600,right:2600,top:2600,bottom:-2600,near:1,far:9000});pSun.shadow.bias=-.001;pSun.shadow.normalBias=.5;pScene.add(pSun);
+    const pFill=new THREE.DirectionalLight(0xe9f0ff,1.3);pFill.position.set(500,250,-400);pScene.add(pFill);
+    const pWorld=new THREE.Group();pScene.add(pWorld);
+    let pGround=null,curDef=null,curInner=null,explodeTarget=0,explodeCur=0,asmStep=0,asmPlaying=false,asmTimer=null,poppers=[];
+    const partMatCache=new Map();
+
+    function centeredG(inner){
+      const box=new THREE.Box3().setFromObject(inner);
+      if(!box.isEmpty())inner.position.sub(box.getCenter(new THREE.Vector3()));
+      return inner;
+    }
+    function collectPoppers(inner){
+      poppers=[];
+      inner.traverse(o=>{if(o.userData&&o.userData.explode)poppers.push({obj:o,dir:o.userData.explode.clone(),home:o.position.clone()});});
+    }
+    function applyExplode(){for(const p of poppers)p.obj.position.copy(p.home).addScaledVector(p.dir,explodeCur);}
+
+    function applyPartHighlight(inner,tags){
+      const active=tags?new Set(tags):null;
+      inner.traverse(o=>{
+        if(!o.isMesh)return;
+        let t=o.userData.tag,anc=o.parent;
+        while(!t&&anc){t=anc.userData&&anc.userData.tag;anc=anc.parent;}
+        if(!active){if(o.userData.origMat)o.material=o.userData.origMat;return;}
+        const on=active.has(t||'part');
+        if(!o.userData.origMat)o.userData.origMat=o.material;
+        const om=o.userData.origMat,mk=(t||'part')+'|'+om.uuid;
+        let m=partMatCache.get(mk);
+        if(!m){m=om.clone();m.userData.base=om.color.clone();partMatCache.set(mk,m);}
+        o.material=m;
+        if(on){m.color.copy(m.userData.base);m.emissive.set(0x365d45);m.emissiveIntensity=.3;}
+        else{m.color.copy(m.userData.base).multiplyScalar(.35);m.emissive.set(0x000000);m.emissiveIntensity=0;}
+      });
+    }
+
+    function frameParts(extra=1){
+      const box=new THREE.Box3().setFromObject(pWorld);
+      if(box.isEmpty())return;
+      const c=box.getCenter(new THREE.Vector3()),r=box.getBoundingSphere(new THREE.Sphere()).radius;
+      const dist=(r*2.6+70)*extra;
+      pControls.target.copy(c);
+      pCamera.position.set(c.x+dist*.74,c.y+dist*.66,c.z+dist*.82);
+      pCamera.up.set(0,1,0);pControls.update();
+      if(!pGround){pGround=new THREE.Mesh(new THREE.CircleGeometry(1600,48),MAT.ground);pGround.rotation.x=-Math.PI/2;pGround.receiveShadow=true;pScene.add(pGround);}
+      pGround.position.y=box.min.y-6;
+    }
+    function setPartsView(mode){
+      const c=pControls.target,dist=pCamera.position.distanceTo(c);
+      if(mode==='top'){pCamera.position.set(c.x,c.y+dist,c.z+0.01);pCamera.up.set(0,0,-1);}
+      else{pCamera.position.set(c.x+dist*.74,c.y+dist*.66,c.z+dist*.82);pCamera.up.set(0,1,0);}
+      pControls.update();
+      document.querySelectorAll('[data-pview]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pview===mode)));
+    }
+
+    function asmShowStep(){
+      const st=curDef.steps[asmStep];
+      $('pp-phase').textContent=(st.e?'PRINT':'ASSEMBLY')+' · STEP '+(asmStep+1);
+      $('pp-count').textContent=(asmStep+1)+' / '+curDef.steps.length;
+      $('pp-text').textContent=st.text(settings,derived);
+    }
+    function asmGoTo(i){
+      if(!curDef||curDef.kind!=='asm'||!curInner)return;
+      asmStep=Math.max(0,Math.min(i,curDef.steps.length-1));
+      const st=curDef.steps[asmStep];explodeTarget=st.e;
+      $('pp-explode-range').value=String(st.e*100);
+      applyPartHighlight(curInner,st.tags);asmShowStep();
+      if(asmStep>=curDef.steps.length-1)stopAsmPlay();
+    }
+    function stopAsmPlay(){asmPlaying=false;if(asmTimer){clearInterval(asmTimer);asmTimer=null;}$('pp-play').textContent='▶';$('pp-play').setAttribute('aria-label','Play assembly steps');}
+    function toggleAsmPlay(){
+      if(!curDef||curDef.kind!=='asm')return;
+      if(asmPlaying){stopAsmPlay();return;}
+      if(asmStep>=curDef.steps.length-1)asmGoTo(0);
+      asmPlaying=true;$('pp-play').textContent='Ⅱ';$('pp-play').setAttribute('aria-label','Pause assembly steps');
+      asmTimer=setInterval(()=>{if(asmStep>=curDef.steps.length-1){stopAsmPlay();return;}asmGoTo(asmStep+1);},2400);
+    }
+
+    function selectPart(keyName,keepStep=false){
+      curDef=PART_DEFS.find(v=>v.key===keyName)||PART_DEFS[0];
+      clearGroup(pWorld);poppers=[];
+      explodeTarget=0;explodeCur=0;
+      curInner=curDef.build(settings,derived);
+      centeredG(curInner);pWorld.add(curInner);collectPoppers(curInner);
+      if(curDef.kind==='asm'){
+        asmStep=keepStep?Math.min(asmStep,curDef.steps.length-1):0;
+        const st=curDef.steps[asmStep];explodeTarget=st.e;explodeCur=st.e;
+        $('pp-explode-range').value=String(st.e*100);
+        applyPartHighlight(curInner,st.tags);asmShowStep();
+      }else{
+        asmStep=0;applyPartHighlight(curInner,null);
+      }
+      applyExplode();try{updatePartChrome();}catch(e){window.__pErr=String(e.stack||e);}frameParts(curDef.kind==='asm'?1.4:1);
+    }
+    function updatePartChrome(){
+      document.querySelectorAll('.part-tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.part===curDef.key)));
+      $('pm-name').textContent=curDef.name;
+      $('pm-sub').textContent=typeof curDef.sub==='function'?curDef.sub(settings,derived):(curDef.sub||'');
+      $('pm-dims').textContent=curDef.dims(settings,derived);
+      $('pm-print').textContent=curDef.print;
+      $('pm-files').replaceChildren(...curDef.files.map(f=>{const a=document.createElement('a');a.href='stl/'+f;a.download=f;a.textContent=f.replace('.stl','').replace(/_/g,' ');return a;}));
+      $('part-dimension').innerHTML=curDef.dimText(settings,derived);
+      const asm=curDef.kind==='asm';
+      $('pp-explode').hidden=!asm;$('pp-steps').hidden=!asm;
+      $('pc-plate').textContent=PART_DEFS[0].dims(settings,derived);
+      $('pc-fence').textContent=PART_DEFS[1].dims(settings,derived);
+      $('pc-tile').textContent=PART_DEFS[2].dims(settings,derived);
+      $('pc-pins').textContent=PART_DEFS[3].dims(settings,derived);
+    }
+    function refreshParts(){if(curDef&&derived)selectPart(curDef.key,true);}
+
+    try{
+      PART_DEFS.forEach(def=>{
+        const b=document.createElement('button');b.type='button';b.className='part-tab';b.dataset.part=def.key;
+        b.setAttribute('role','tab');b.textContent=def.tab;
+        b.addEventListener('click',()=>{stopAsmPlay();selectPart(def.key);});
+        $('part-tabs').append(b);
+      });
+      $('pp-restart').addEventListener('click',()=>asmGoTo(0));
+      $('pp-prev').addEventListener('click',()=>asmGoTo(asmStep-1));
+      $('pp-next').addEventListener('click',()=>asmGoTo(asmStep+1));
+      $('pp-play').addEventListener('click',toggleAsmPlay);
+      $('pp-explode-range').addEventListener('input',e=>{explodeTarget=Number(e.target.value)/100;});
+      document.querySelectorAll('[data-pview]').forEach(b=>b.addEventListener('click',()=>setPartsView(b.dataset.pview)));
+      selectPart('plate');
+      new ResizeObserver(()=>{const w=partsViewer.clientWidth,h=partsViewer.clientHeight;if(w&&h){pCamera.aspect=w/h;pCamera.updateProjectionMatrix();pRenderer.setSize(w,h);}}).observe(partsViewer);
+      (function animateParts(){requestAnimationFrame(animateParts);explodeCur+=(explodeTarget-explodeCur)*0.16;if(Math.abs(explodeTarget-explodeCur)<0.001)explodeCur=explodeTarget;applyExplode();pControls.update();pRenderer.render(pScene,pCamera);})();
+    }catch(err){console.error('Parts viewer failed to start:',err);}
+
+    $('settings-form').addEventListener('input',refreshParts);
+    $('settings-form').addEventListener('submit',refreshParts);
+    $('reset-settings').addEventListener('click',refreshParts);
+  </script>
+</body>
+</html>
+

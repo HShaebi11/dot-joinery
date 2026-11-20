@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { projects } from '../../data/projects';
+import { SITE } from '../../data/site';
+---
+
+<Base title="Projects" description="Parametric, printable joinery projects — pegboard drilling jigs, case studies, and sliced print sets.">
+  <div class="wrap">
+    <div class="page-head">
+      <span class="eyebrow">{SITE.org}</span>
+      <h1>Projects</h1>
+      <p class="lede">
+        Every project is parametric at its core: named dimensions drive the
+        geometry, sources are open, and print files are sliced and ready.
+      </p>
+    </div>
+
+    <div class="project-grid" style="padding: 44px 0 20px;">
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </div>
+</Base>

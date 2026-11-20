@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import InstallButton from '../../components/InstallButton.astro';
+import { getSkills, getSkill, splitFrontmatter, renderMarkdown } from '../../data/content';
+import { SITE } from '../../data/site';
+
+export function getStaticPaths() {
+  return getSkills().map((s) => ({
+    params: { slug: s.slug },
+    props: { skill: s },
+  }));
+}
+
+interface Props {
+  skill: { slug: string; raw: string };
+}
+
+const { skill } = Astro.props;
+const { data, body } = splitFrontmatter(skill.raw);
+const html = renderMarkdown(body);
+const sourceUrl = `${SITE.repoUrl}/blob/main/skills/${skill.slug}/SKILL.md`;
+---
+
+<Base title={data.name ?? skill.slug} description={data.description ?? 'Agent skill'}>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="eyebrow">Agent skill</span>
+      <h1>{data.name ?? skill.slug}</h1>
+      <p class="lede">{data.description}</p>
+      <div class="meta-row">
+        <span class="tag">SKILL.md</span>
+        <span class="chip">skills/{skill.slug}</span>
+      </div>
+      <div class="detail-actions">
+        <a class="btn" href={sourceUrl} rel="noopener">View source on GitHub</a>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <article class="prose">
+        <Fragment set:html={html} />
+      </article>
+
+      <aside class="side-stack">
+        <div class="side-card">
+          <h4>Install</h4>
+          <InstallButton skill={skill.slug} />
+        </div>
+        <div class="side-card">
+          <h4>Files</h4>
+          <div class="file-list">
+            <a href={sourceUrl} rel="noopener"><span>SKILL.md</span><span class="ext">md</span></a>
+            <a href={`${SITE.repoUrl}/tree/main/skills/${skill.slug}`} rel="noopener"><span>Skill folder</span><span class="ext">↗</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>

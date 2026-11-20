@@ -1,0 +1,92 @@
+{
+    "error_string": "Success.",
+    "layer_height": 0.2800000011920929,
+    "peak_rss_mb": 97.265625,
+    "plate_index": 0,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 139.65695190429688,
+                "Bridge": 155.39378356933594,
+                "Custom": 1.2665953636169434,
+                "Inner wall": 573.4658813476563,
+                "Internal solid infill": 857.3895263671875,
+                "Outer wall": 218.39849853515625,
+                "Skirt": 13.378185272216797,
+                "Sparse infill": 684.9915161132813,
+                "Top surface": 152.10023498535156,
+                "Travel": 183.53147888183594,
+                "Undefined": 183.16128540039063
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "GFA00",
+                    "id": 1,
+                    "main_used_g": 22.589582443237305,
+                    "total_used_g": 22.589582443237305
+                }
+            ],
+            "id": 1,
+            "layer_filament_change": 0,
+            "main_predication": 2978.198486328125,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 63.0,
+                        "height": 16.0,
+                        "width": 120.0,
+                        "x": 30.0,
+                        "y": 58.5,
+                        "z": 0.0
+                    },
+                    "id": 5,
+                    "name": "rail_frame.stl",
+                    "triangle_count": 358
+                }
+            ],
+            "times": {
+                "conflict_check_time": 0,
+                "detect_overhangs_time": 1,
+                "export_gcode_time": 188,
+                "flush_plan_time": 0,
+                "generate_support_material_time": 3,
+                "infill_generate_time": 27,
+                "infill_time": 50,
+                "ironing_time": 0,
+                "make_perimeters_time": 30,
+                "multifilament_segment_2d_time": 0,
+                "other_slice_time": 2,
+                "prepare_infill_time": 23,
+                "region_split_time": 0,
+                "skirt_brim_time": 0,
+                "slice_layers_time": 2,
+                "sliced_time": 280,
+                "sliced_time_with_cache": 188,
+                "support_detect_time": 0,
+                "support_interface_time": 0,
+                "support_normal_generate_time": 0,
+                "support_toolpath_time": 0,
+                "support_tree_generate_time": 0,
+                "toolpath_time": 5,
+                "wall_time": 28,
+                "wipe_tower_time": 1
+            },
+            "total_predication": 2979.094970703125,
+            "triangle_count": 358,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 20.0,
+    "times": {
+        "export_3mf_time": 0,
+        "export_slicedata_time": 0,
+        "export_time": 0,
+        "import_time": 3,
+        "load_slicedata_time": 0,
+        "prepare_time": 6
+    },
+    "wall_loops": 4
+}
