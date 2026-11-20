@@ -3,7 +3,7 @@ export const SITE = {
   brand: 'joinery',
   org: 'Department of Things',
   tagline: 'Parametric, printable joinery — tools, case studies, and agent skills.',
-  url: 'https://dot-joinery.pages.dev',
+  url: 'https://joinery.fromdot.work',
   repo: 'HShaebi11/dot-joinery',
   repoUrl: 'https://github.com/HShaebi11/dot-joinery',
   skillsSh: 'https://skills.sh',

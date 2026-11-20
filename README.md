@@ -4,7 +4,7 @@
 3D-printable tools for woodworking, the agent skills that design them, and the
 case studies behind both.
 
-🌐 **Live site:** https://dot-joinery.pages.dev
+🌐 **Live site:** https://joinery.fromdot.work
 
 ## What's here
 
@@ -21,10 +21,10 @@ plywood pegboard (10 mm holes, 50 mm grid) without measuring every hole.
 
 | Project | What |
 |---|---|
-| [FORM / FIELD](https://dot-joinery.pages.dev/projects/pegboard-saddle-jig/) | Interactive explorer — five jig concepts compared in a live 3D viewer |
-| [Drilling Jigs — v2](https://dot-joinery.pages.dev/projects/pegboard-drilling-jigs/) | Clean-print edition: corner base + fence, indexing bar, row seeder. OpenSCAD + Fusion 360 |
-| [Jig — v3](https://dot-joinery.pages.dev/projects/pegboard-jigs-v3/) | Configurable two-tool system with a browser configurator; full case study included |
-| [A1 mini Print Set](https://dot-joinery.pages.dev/projects/pegboard-print-set/) | Print-ready STLs + sliced G-code for all five proposals, Bambu A1 mini |
+| [FORM / FIELD](https://joinery.fromdot.work/projects/pegboard-saddle-jig/) | Interactive explorer — five jig concepts compared in a live 3D viewer |
+| [Drilling Jigs — v2](https://joinery.fromdot.work/projects/pegboard-drilling-jigs/) | Clean-print edition: corner base + fence, indexing bar, row seeder. OpenSCAD + Fusion 360 |
+| [Jig — v3](https://joinery.fromdot.work/projects/pegboard-jigs-v3/) | Configurable two-tool system with a browser configurator; full case study included |
+| [A1 mini Print Set](https://joinery.fromdot.work/projects/pegboard-print-set/) | Print-ready STLs + sliced G-code for all five proposals, Bambu A1 mini |
 
 Every design is parametric — named dimensions drive the geometry, sources are
 open (OpenSCAD `.scad` and Fusion 360 Python), and print files are sliced and
@@ -44,7 +44,7 @@ Works with Claude Code, Cursor, Devin, Codex, Windsurf, OpenCode, and 70+
 agents — the CLI auto-detects what you have, or pass `-a <agent>` and `-g` for
 global installs. Requires Node.js 22.20+.
 
-Browse them at https://dot-joinery.pages.dev/skills/
+Browse them at https://joinery.fromdot.work/skills/
 
 ## Working on the site
 

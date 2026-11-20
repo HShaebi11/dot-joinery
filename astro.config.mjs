@@ -2,5 +2,5 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://dot-joinery.pages.dev',
+  site: 'https://joinery.fromdot.work',
 });

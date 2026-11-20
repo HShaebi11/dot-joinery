@@ -7,7 +7,7 @@ Code, Cursor, and other agents that support the `.agents` skills format.
 
 Part of [DOT Joinery](https://github.com/HShaebi11/dot-joinery) —
 joinery by Department of Things. Live catalog:
-https://dot-joinery.pages.dev/skills/
+https://joinery.fromdot.work/skills/
 
 ## Skills
 
