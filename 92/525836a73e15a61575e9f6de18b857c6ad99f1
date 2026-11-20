@@ -1,0 +1,14 @@
+AGENTS.md
+  h_029884cdf8da6a 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "92525836a73e15a61575e9f6de18b857c6ad99f1",
+  "prompts": {},
+  "humans": {
+    "h_029884cdf8da6a": {
+      "author": "Hamza <125047677+HShaebi11@users.noreply.github.com>"
+    }
+  }
+}
