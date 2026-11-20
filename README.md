@@ -58,7 +58,8 @@ npm run preview  # serve the production build
 - Project metadata lives in `src/data/projects.ts`; READMEs and `SKILL.md`
   files are pulled in automatically at build time — add a project folder or a
   skill folder and it appears on the site.
-- The site deploys to Cloudflare Pages from `dist/` (`npx wrangler pages deploy dist`).
+- The site deploys to Cloudflare Pages from `dist/` — `npm run deploy`
+  (builds, then `wrangler pages deploy`; needs `wrangler` auth).
 
 ## License
 

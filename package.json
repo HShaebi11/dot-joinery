@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "deploy": "npm run build && CLOUDFLARE_ACCOUNT_ID=d8029516e0a19fdd4d7fedeb1a44c6aa npx wrangler pages deploy dist --project-name=dot-joinery --branch=main"
   },
   "dependencies": {
     "astro": "^7.4.13",
